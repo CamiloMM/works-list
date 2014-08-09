@@ -1,3 +1,5 @@
+<img src="https://cdn.rawgit.com/CamiloMM/works-list/master/graphics/favicon.svg" alt="wl logo" title="Yes, this logo was loosely inspired by npm's. I wouldn't use a similar font, though, because it'd be way too obvious at that point. Also, it's not the exact same color." align="right" height="64" /></a>
+
 works-list
 ==========
 
