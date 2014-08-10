@@ -29,7 +29,7 @@ export PORT=${PORT-49445}
 debug=false
 
 # Logfile.
-logfile='node.log'
+logfile='server.log'
 
 # This is the path to the server.js startup script. It can be relative.
 script='bin/www'
@@ -37,9 +37,9 @@ script='bin/www'
 # This is the script that is ran when the server is started.
 run() {
     if $debug; then # Debug mode is meant for running in a console.
-        node "$(absolute "$script")" "$GUID" 2>&1 | tee "$(absolute $logfile)"
+        node "$(absolute "$script")" "$GUID" | tee "$(absolute $logfile)"
     else
-        node "$(absolute "$script")" "$GUID" &> "$(absolute $logfile)" &
+        node "$(absolute "$script")" "$GUID" 2> /dev/null > "$(absolute $logfile)" &
     fi
 }
 
