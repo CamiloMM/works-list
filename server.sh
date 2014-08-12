@@ -4,7 +4,7 @@
 # Note that we do not support starting the same server in two or more different ports.
 # This is by design, because it would complicate things for no useful reason, and some
 # servers might want to listen in two ports (like http+https).
-# If the start method is called and the server is already started, it will re-start.
+# If the start method is called and the server is already started, it will NOT re-start.
 # If the stop method is called and the script is not running, it will just ignore it.
 # If the restart method is called and the script is not running, it will start.
 # If any method fails, it will return a non-zero status code.
@@ -20,10 +20,10 @@ export USER="${USER:-$(whoami)}"
 
 # This key must be unique by server. YOU MUST CHANGE IT if you re-use this server script.
 # (This is used to identify the correct node process - it must not show up elsewhere)
-export GUID='6827bfe4-c6fb-4eac-9da4-ff21767d9101'
+GUID='6827bfe4-c6fb-4eac-9da4-ff21767d9101'
 
 # Port number. Expressjs uses this.
-export PORT=${PORT-49445}
+export PORT=49445
 
 # Tells us if we're in debug mode.
 debug=false
@@ -37,9 +37,10 @@ script='bin/www'
 # This is the script that is ran when the server is started.
 run() {
     if $debug; then # Debug mode is meant for running in a console.
-        node "$(absolute "$script")" "$GUID" | tee "$(absolute $logfile)"
+        node "$(absolute "$script")" "$GUID"
     else
-        node "$(absolute "$script")" "$GUID" 2> /dev/null > "$(absolute $logfile)" &
+        node "$(absolute "$script")" "$GUID" 2>&1 | \
+        sed -r 's:(\\x1b|\x1b)\[[0-9;]*m::g' > "$(absolute $logfile)" &
     fi
 }
 
@@ -73,8 +74,7 @@ base() {
 # Are we running on Windows?
 windows() { [[ -n "$WINDIR" ]]; }
 
-# Normalize the script's path (the variable above).
-# What this does is give you the absolute path to the script.
+# Normalize a relative path.
 # This is more complicated than it seems, 'cause we can't rely on realpath or readlink.
 # (Call it with the path to normalize as the argument, like `absolute "$script"`.)
 absolute() {
@@ -89,11 +89,14 @@ absolute() {
 # Gets the Process ID of the node instance launched by us.
 # If it returns an empty string, then no instance is running.
 process() {
-    # Options for ps - the windows build requires -W, the unix one does not ignore it.
-    if windows; then opts='-W aux'; else opts='aux'; fi
-    # The reason we're using a herestring instead of piping is because this way,
-    # grep won't show up in the process list when ps is invoked.
-    grep -F "$GUID" <<< "$(ps $opts)" | tr -s ' ' | cut -f 2 -d ' '
+    if windows; then
+        # The reason we're using a herestring instead of piping is because this way,
+        # grep won't show up in the process list when wmic or ps is invoked.
+        processes="$(WMIC path win32_process get Commandline,Processid | tr -s ' ')"
+        grep -F "$GUID" <<< "$processes" | sed 's/\s*$//;s/.* //'
+    else
+        grep -F "$GUID" <<< "$(ps $opts)" | tr -s ' ' | cut -f 2 -d ' '
+    fi
 }
 
 # Returns a value indicanting whether or not the node script is running.
@@ -106,10 +109,10 @@ help() {
 }
 
 # Start the server.
+# If we can't manage to start it, return false.
 start() {
-    if running; then
-        restart
-    else
+    "$(absolute database.sh)" start
+    if ! running; then
         run
         sleep 1 # Give it time to start up in the background.
         running
@@ -121,7 +124,9 @@ start() {
 stop() {
     retries=5
     if running; then
-        if ! kill -s SIGINT "$(process)" &> /dev/null; then
+        if kill -s SIGINT "$(process)" &> /dev/null; then
+            stopped
+        else
             # We didn't manage to terminate the process via SIGINT
             if ((retries-- != 0)); then
                 # Try again in one second.
@@ -129,7 +134,9 @@ stop() {
                 stop
             else
                 # After 5 attempts in 5 seconds, just go for SIGKILL.
-                kill -s SIGKILL "$(process)" &> /dev/null
+                if kill -s SIGKILL "$(process)" &> /dev/null; then
+                    stopped
+                fi
             fi
         fi
     fi
@@ -148,9 +155,20 @@ restart() {
     fi
 }
 
+# What to do when successfully started.
+started() {
+    echo "Node server $GUID started on port $PORT."
+}
+
+# What to do when successfully stopped.
+stopped() {
+    echo "Node server $GUID stopped on port $PORT."
+    "$(absolute database.sh)" stop
+}
+
 # (Re)start the server in a debugging mode.
 debug() {
-    export DEBUG=works-list
+    export DEBUG='*'
     debug=true
     restart
 }
@@ -158,6 +176,7 @@ debug() {
 # Info about running script.
 info() {
     echo "GUID:    $GUID"
+    echo "Port:    $PORT"
     echo "script:  $(absolute "$script")"
     echo "running: $(running && echo yes"$($debug && echo , debugging $DEBUG)" || echo no)"
 }
