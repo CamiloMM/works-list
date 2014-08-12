@@ -20,13 +20,16 @@ logfile='database.log'
 # This is the path to the database's data directory. It can be relative.
 storage='data'
 
+# Temporary storage for reporting process ID.
+pid=-1
+
 # This is the script that is ran when the database is started.
 run() {
     if $debug; then # Debug mode is meant for running in a console.
-        mongod --journal --port $port --dbpath "$(absolute "$storage")"
+        mongod --journal --smallfiles --port $port --dbpath "$(absolute "$storage")"
     else
-        mongod --journal --port $port --dbpath "$(absolute "$storage")" \
-        --logpath "$(absolute "$logfile")" &> /dev/null &
+        mongod --journal --smallfiles --port $port --dbpath "$(absolute "$storage")" \
+        --logpath "$(absolute "$logfile")" --logappend &> /dev/null &
     fi
 }
 
@@ -82,7 +85,7 @@ process() {
 }
 
 # Returns a value indicanting whether or not the node script is running.
-running() { [[ -n "$(process)" ]]; }
+running() { pid=$(process); [[ -n "$pid" ]]; }
 
 # Show help.
 help() {
@@ -96,16 +99,18 @@ start() {
     if ! running; then
         run
         sleep 1 # Give it time to start up in the background.
-        running
+        running && started
     fi
 }
 
 # Stop the database.
 # If we can't manage to stop it, return false.
 stop() {
-    retries=5
+    # Windows needs special love, because of the trisomy 21 developer team.
+    if windows; then prefix='/bin/'; flag='-f'; fi
+    retries=${retries:-5}
     if running; then
-        if kill -s SIGINT "$(process)" &> /dev/null; then
+        if ${prefix}kill $flag -s SIGINT "$(process)" &> /dev/null; then
             stopped
         else
             # We didn't manage to terminate the process via SIGINT
@@ -138,13 +143,13 @@ restart() {
 }
 
 # What to do when successfully started.
-stopped() {
-    echo "Database server on port $port started."
+started() {
+    echo "Database server on port $port started (process ID $pid)."
 }
 
 # What to do when successfully stopped.
 stopped() {
-    echo "Database server on port $port stopped."
+    echo "Database server on port $port stopped (process ID $pid)."
 }
 
 # (Re)start the database in a debugging mode.
@@ -155,9 +160,9 @@ debug() {
 
 # Info about running script.
 info() {
-    echo "Port:    $port"
+    echo "port:    $port"
     echo "script:  $(absolute "$script")"
-    echo "running: $(running && echo yes"$($debug && echo , debugging $DEBUG)" || echo no)"
+    echo "running: $(running && echo yes, $($debug && echo debugging with) process ID $pid || echo no)"
 }
 
 # HTTP 767
@@ -181,7 +186,7 @@ repair() {
 }
 
 sanity # Check that blood is not falling down the walls.
-trap stop EXIT # Exit gracefully.
+trap stop SIGHUP SIGINT SIGTERM # Exit gracefully.
 
 case "$1" in
     -h|--help|help) help ;;
