@@ -194,14 +194,20 @@ info() {
 # This method works, but I was surprised that it just did, when replacing ITSELF.
 # But in other words, if the update fails, just get new code from GitHub manually.
 update() {
+    # Check if we're running. If we are, we'll re-start later.
+    if running; then restart=true; else restart=false; fi
+    # Stop everything for the update.
+    stop
     # We're going to create a subshell. This should protect our flow.
     (
         # Also, I'm new to git; So this may not be the best way, but it does work.
-        git init -q;
-        [[ -z "$(git remote show)" ]] && git remote add origin "$origin";
-        git reset --hard > /dev/null;
-        git pull origin master;
-        exit $?; # In no circumstance more code should be ran after this point.
+        git init -q
+        [[ -z "$(git remote show)" ]] && git remote add origin "$origin"
+        git reset --hard -q && git pull origin master
+        code=$?
+        $restart && "${BASH_SOURCE[0]}" start
+        # In no circumstance more code should be ran after this point.
+        exit $code
     )
 }
 
