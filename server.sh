@@ -10,6 +10,8 @@
 # If any method fails, it will return a non-zero status code.
 # The info method gives you all the information you need about this server instance.
 # Debug is similar to restart, but enables debugging options and stays foreground.
+# The update method is, seemingly, working just fine for me, but I believe I'm
+# relying on undefined behavior here. So if it fails for you, do that manually.
 
 # One important thing to remember is that this must be runnable by Cron,
 # and Cron has very limited environment variables (no $USER, $PATH is minimal...)
@@ -33,6 +35,9 @@ logfile='server.log'
 
 # This is the path to the server.js startup script. It can be relative.
 script='bin/www'
+
+# Git URL for our repository; we use this for the self-update.
+origin='git://github.com/CamiloMM/works-list.git'
 
 # Temporary storage for reporting process ID.
 pid=-1
@@ -107,7 +112,7 @@ running() { pid=$(process); [[ -n "$pid" ]]; }
 
 # Show help.
 help() {
-    echo "Usage: $0 <start|stop|restart|debug|info>"
+    echo "Usage: $0 <start|stop|restart|debug|info|update>"
     echo "Read this script's comments for more."
 }
 
@@ -186,6 +191,20 @@ info() {
     echo "running: $(running && echo yes, "$($debug && echo debugging "$DEBUG" with' ')"process ID $pid || echo no)"
 }
 
+# This method works, but I was surprised that it just did, when replacing ITSELF.
+# But in other words, if the update fails, just get new code from GitHub manually.
+update() {
+    # We're going to create a subshell. This should protect our flow.
+    (
+        # Also, I'm new to git; So this may not be the best way, but it does work.
+        git init -q;
+        [[ -z "$(git remote show)" ]] && git remote add origin "$origin";
+        git reset --hard > /dev/null;
+        git pull origin master;
+        exit $?; # In no circumstance more code should be ran after this point.
+    )
+}
+
 # HTTP 767
 error() {
     echo "You are drunk. Avoid driving and/or having sex with the blurry people."
@@ -197,6 +216,6 @@ trap stop SIGHUP SIGINT SIGTERM # Exit gracefully.
 
 case "$1" in
     -h|--help|help) help ;;
-    start|stop|restart|info|debug) $1 ;;
+    start|stop|restart|info|debug|update) $1 ;;
     *) error ;;
 esac
