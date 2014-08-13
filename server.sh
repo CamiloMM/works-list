@@ -98,7 +98,7 @@ process() {
         processes="$(WMIC path win32_process get Commandline,Processid | tr -s ' ')"
         grep -F "$GUID" <<< "$processes" | sed 's/\s*$//;s/.* //'
     else
-        grep -F "$GUID" <<< "$(ps $opts)" | tr -s ' ' | cut -f 2 -d ' '
+        grep -F "$GUID" <<< "$(ps aux)" | tr -s ' ' | cut -f 2 -d ' '
     fi
 }
 

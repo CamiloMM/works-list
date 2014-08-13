@@ -80,7 +80,7 @@ process() {
         processes="$(WMIC path win32_process get Commandline,Processid | tr -s ' ')"
         grep -F "mongod" <<< "$processes" | grep -F "$port" | sed 's/\s*$//;s/.* //'
     else
-        grep -F "mongod" <<< "$(ps $opts)" | grep -F "$port" | tr -s ' ' | cut -f 2 -d ' '
+        grep -F "mongod" <<< "$(ps aux)" | grep -F "$port" | tr -s ' ' | cut -f 2 -d ' '
     fi
 }
 
