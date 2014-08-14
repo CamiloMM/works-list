@@ -7,6 +7,7 @@ var bodyParser   = require('body-parser');
 var mongo        = require('mongodb');
 var monk         = require('monk');
 var session      = require('express-session');
+var MongoStore   = require('connect-mongo')(express);
 
 var db = monk('127.0.0.1:50534/works-list');
 
@@ -15,10 +16,13 @@ var users = require('./routes/users');
 
 var config = require('./config.json');
 
+var mongoStore = new MongoStore({url: 'mongodb://127.0.0.1:50534/works-list'});
+
 var sessionSettings = {
     secret: config.secret, // Make sure you edit this in your config.
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: mongoStore
 };
 
 var app = express();
