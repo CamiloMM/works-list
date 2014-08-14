@@ -6,11 +6,20 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var mongo        = require('mongodb');
 var monk         = require('monk');
+var session      = require('express-session');
 
 var db = monk('127.0.0.1:50534/works-list');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+var config = require('./config.json');
+
+var sessionSettings = {
+    secret: config.secret, // Make sure you edit this in your config.
+    resave: true,
+    saveUninitialized: true
+};
 
 var app = express();
 
@@ -29,6 +38,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(session(sessionSettings));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
