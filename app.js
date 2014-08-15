@@ -12,6 +12,7 @@ var passport     = require('passport');
 
 var config = require('./config.json');
 var db = monk(config.database);
+var app = express();
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -20,10 +21,8 @@ var sessionSettings = {
     secret: config.secret, // Make sure you edit this in your config.
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({url: config.database});
+    store: new MongoStore({url: config.database})
 };
-
-var app = express();
 
 // Make our db accessible to our router
 app.use(function(req, res, next) {
