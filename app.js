@@ -10,20 +10,17 @@ var session      = require('express-session');
 var MongoStore   = require('connect-mongo')(session);
 var passport     = require('passport');
 
-var db = monk('mongodb://127.0.0.1:50534/works-list');
+var config = require('./config.json');
+var db = monk(config.database);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
-var config = require('./config.json');
-
-var mongoStore = new MongoStore({url: 'mongodb://127.0.0.1:50534/works-list'});
 
 var sessionSettings = {
     secret: config.secret, // Make sure you edit this in your config.
     resave: true,
     saveUninitialized: true,
-    store: mongoStore
+    store: new MongoStore({url: config.database});
 };
 
 var app = express();
