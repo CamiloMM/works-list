@@ -7,9 +7,10 @@ var bodyParser   = require('body-parser');
 var mongo        = require('mongodb');
 var monk         = require('monk');
 var session      = require('express-session');
-var MongoStore   = require('connect-mongo')(express);
+var MongoStore   = require('connect-mongo')(session);
+var passport     = require('passport');
 
-var db = monk('127.0.0.1:50534/works-list');
+var db = monk('mongodb://127.0.0.1:50534/works-list');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
