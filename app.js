@@ -8,20 +8,17 @@ var mongo        = require('mongodb');
 var monk         = require('monk');
 var session      = require('express-session');
 var MongoStore   = require('connect-mongo')(session);
-var passport     = require('passport');
 
 var config = require('./config.json');
-var db = monk(config.database);
+var db = monk(config.dbUrl);
+var passport = require('./app/passport')(db.get('users'));
 var app = express();
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var sessionSettings = {
     secret: config.secret, // Make sure you edit this in your config.
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({url: config.database})
+    store: new MongoStore({url: config.dbUrl})
 };
 
 // Make our db accessible to our router
@@ -40,10 +37,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(session(sessionSettings));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/'     , require('./routes/index'));
+app.use('/users', require('./routes/users'));
+app.use('/login', require('./routes/login')(passport));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
