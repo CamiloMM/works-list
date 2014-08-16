@@ -4,28 +4,26 @@ var favicon      = require('static-favicon');
 var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
-var mongo        = require('mongodb');
+var ObjectId     = require('mongodb').ObjectID;
 var monk         = require('monk');
 var session      = require('express-session');
 var MongoStore   = require('connect-mongo')(session);
 
-var config = require('./config.json');
-var db = monk(config.dbUrl);
-var passport = require('./app/passport')(db.get('users'));
 var app = express();
+app.config = require('./config.json');
+app.db = monk(app.config.dbUrl);
+app.passport = require('./app/passport')(app.db.get('users'));
+require('./app/models')(app);
 
 var sessionSettings = {
-    secret: config.secret, // Make sure you edit this in your config.
+    secret: app.config.secret, // Make sure you edit this in your config.
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({url: config.dbUrl})
+    store: new MongoStore({url: app.config.dbUrl})
 };
 
-// Make our db accessible to our router
-app.use(function(req, res, next) {
-    req.db = db;
-    next();
-});
+// Make our app accessible to our router
+app.use(function(req, res, next) { req.app = app; next(); });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,13 +35,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(session(sessionSettings));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(app.passport.initialize());
+app.use(app.passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/'     , require('./routes/index'));
-app.use('/users', require('./routes/users'));
-app.use('/login', require('./routes/login')(passport));
+app.use('/'      , require('./routes/index'));
+app.use('/users' , require('./routes/users'));
+app.use('/login' , require('./routes/login')(app.passport));
+app.use('/signup', require('./routes/signup')(app));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
