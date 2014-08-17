@@ -22,8 +22,9 @@ app.db.once('open', function callback () {
     app.passport = require('./app/passport');
 
     var sessionSettings = {
-        // The cookie here is configured with maxAge of one month.
-        cookie: { path: '/', httpOnly: true, secure: false, maxAge: 2592000000 },
+        // The cookie here is configured with maxAge of one year AND ONE MILLISECOND.
+        // No, seriously, who was the genius that thought cookies age should be in ms??
+        cookie: { path: '/', httpOnly: true, secure: false, maxAge: 31104000001 },
         secret: app.config.secret, // Make sure you edit this in your config.
         resave: true,
         saveUninitialized: true,
