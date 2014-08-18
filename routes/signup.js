@@ -59,4 +59,4 @@ router.post('/', function(req, res) {
     }
 });
 
-return router;
+module.exports = router;

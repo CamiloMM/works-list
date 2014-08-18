@@ -50,7 +50,7 @@ app.db.once('open', function callback () {
 
     app.use('/'      , require('./routes/index'));
     app.use('/users' , require('./routes/users'));
-    app.use('/login' , require('./routes/login')(app.passport));
+    app.use('/login' , require('./routes/login'));
     app.use('/signup', require('./routes/signup'));
 
     /// catch 404 and forward to error handler

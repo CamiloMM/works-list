@@ -12,4 +12,4 @@ var inviteSchema = new Schema({
 
 var Invite = mongoose.model('Invite', userSchema);
 
-model.exports = Invite;
+module.exports = Invite;
