@@ -1,5 +1,6 @@
 {
     "secret": "TODO: get a secure, random string here! (And never change it!)",
     "dbUrl": "mongodb://127.0.0.1:50534/works-list",
-    "adminInvite": "TODO: place here a secret invite code that grants admin powers!"
+    "adminInvite": "TODO: place here a secret invite code that grants admin powers!",
+    "bcryptRounds": 12
 }

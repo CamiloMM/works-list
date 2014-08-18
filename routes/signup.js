@@ -3,6 +3,7 @@ var router   = express.Router();
 var mongoose = require('mongoose');
 var User     = mongoose.model('User');
 var Invite   = mongoose.model('Invite');
+var bcrypt   = require('bcrypt');
 
 router.get('/', function(req, res) {
     res.render('signup', {});
@@ -41,16 +42,20 @@ router.post('/', function(req, res) {
 
     // This gets called if we're ready to create the user.
     function createUser(invite, level) {
-        var user = new User({
-            name:     username,
-            email:    req.body.email || null,
-            password: req.body.password,
-            level:    level,
-            invite:   invite
-        });
+        bcrypt.hash(req.body.password, req.app.config.bcryptRounds, function(err, hash) {
+            if (err) return fail(err.message);
 
-        user.save(function() {
-            res.send('User created! Most impressive.');
+            var user = new User({
+                name:   username,
+                email:  req.body.email || null,
+                hash:   hash,
+                level:  level,
+                invite: invite
+            });
+
+            user.save(function() {
+                res.send('User created! Most impressive.');
+            });
         });
     }
 
