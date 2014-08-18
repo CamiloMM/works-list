@@ -10,6 +10,6 @@ var inviteSchema = new Schema({
     description : String, // to be seen only by the inviter.
 });
 
-var Invite = mongoose.model('Invite', userSchema);
+var Invite = mongoose.model('Invite', inviteSchema);
 
 module.exports = Invite;
