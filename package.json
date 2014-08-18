@@ -6,6 +6,7 @@
     "start": "./server.sh start"
   },
   "dependencies": {
+    "bcrypt": "^0.8.0",
     "body-parser": "^1.0.0",
     "connect-mongo": "^0.4.1",
     "cookie-parser": "^1.0.1",
