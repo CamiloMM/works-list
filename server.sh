@@ -178,8 +178,9 @@ stopped() {
 
 # (Re)start the server in a debugging mode.
 debug() {
-    export DEBUG='*'
+    export DEBUG="${DEBUG:-*}"
     debug=true
+    echo "Starting node server $GUID in debug mode on port $PORT."
     restart
 }
 
