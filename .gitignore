@@ -30,3 +30,7 @@ data
 # The config file should not be re-used, as it contains a secret string.
 # Remember to create your own from the example!
 config.json
+
+# Build artifacts.
+*.tlog
+*.pdb
