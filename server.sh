@@ -222,7 +222,7 @@ modules() {
     # Just to make sure that everything works as intended, let's be on the right dir.
     old="$PWD"
     cd "$(base)"
-    target="node_modules-$(uname -s)-$(uname -m)-node-$(node -v)"
+    target="deps/native/node_modules-$(uname -s)-$(uname -m)-node-$(node -v)"
     # Check if something exists already.
     if [[ -e node_modules ]]; then
         # Check if it's a link. If it's a link, we'll just remove it.
