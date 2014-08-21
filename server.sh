@@ -112,13 +112,15 @@ running() { pid=$(process); [[ -n "$pid" ]]; }
 
 # Show help.
 help() {
-    echo "Usage: $0 <start|stop|restart|debug|info|update>"
+    echo "Usage: $0 <start|stop|restart|debug|info|update|modules>"
     echo "Read this script's comments for more."
 }
 
 # Start the server.
 # If we can't manage to start it, return false.
 start() {
+    # Make sure we have all packages installed.
+    modules
     "$(absolute database.sh)" start
     if ! running; then
         run
@@ -192,7 +194,7 @@ info() {
     echo "running: $(running && echo yes, "$($debug && echo debugging "$DEBUG" with' ')"process ID $pid || echo no)"
 }
 
-# This method works, but I was surprised that it just did, when replacing ITSELF.
+# This method works, though I was surprised that it did, even when replacing ITSELF.
 # But in other words, if the update fails, just get new code from GitHub manually.
 update() {
     # Check if we're running. If we are, we'll re-start later.
@@ -212,6 +214,109 @@ update() {
     )
 }
 
+# This method makes sure that the node_modules are built for the current platform.
+# Also, as a rule of thumb. DO NOT RUN NPM INSTALL. This will delete a directory if
+# it finds one, because it's meant to be a symlink. Ancient filesystems such as
+# FAT are not supported, neither OSes that don't know what a symlink is (WinXP).
+modules() {
+    # Just to make sure that everything works as intended, let's be on the right dir.
+    old="$PWD"
+    cd "$(base)"
+    target="node_modules-$(uname -s)-$(uname -m)-node-$(node -v)"
+    # Check if something exists already.
+    if [[ -e node_modules ]]; then
+        # Check if it's a link. If it's a link, we'll just remove it.
+        # If it's not, we'll also do that but scold the user, too.
+        if link node_modules; then
+            rmlink node_modules
+        else
+            echo 'Warning: node_modules was found, and it was not a symlink.' 1>&2
+            echo 'Usually, this means that you ran npm install by yourself.' 1>&2
+            echo 'This script handles that, and will delete your node_modules.' 1>&2
+            rm -rf node_modules
+        fi
+    fi
+    # Now node_modules is not supposed to exist.
+    if [[ -e node_modules ]]; then
+        # If it still exists, it means we couldn't remove it. Warn the user and return.
+        echo 'We could not remove node_modules. Something is wrong here!' 1>&2
+        echo '(we will not continue in this case.)' 1>&2
+        cd "$old"
+        exit 1
+    fi
+    # Now that we know node_modules doesn't exist, check if our target exists.
+    if [[ ! -d "$target" ]]; then
+        mkdir "$target" # Note that if it was a file, the user was just asking for it.
+    fi
+    # If we couldn't create it, error out.
+    if [[ ! -d "$target" ]]; then
+        echo 'We could not create a native install dir. Something is wrong here!' 1>&2
+        echo '(we will not continue in this case.)' 1>&2
+        cd "$old"
+        exit 1
+    fi
+    link node_modules "$target"
+    # If node_modules cannot be found, error out.
+    if [[ ! -e node_modules ]]; then
+        echo 'We could not create a symlink. Something is wrong here!' 1>&2
+        echo 'In particular, check if you are not in WinXP or a FAT partition.' 1>&2
+        echo '(we will not continue in this case.)' 1>&2
+        cd "$old"
+        exit 1
+    fi
+    # Now, if our native directory didn't exist before, we must run npm install.
+    if $debug; then
+        npm install
+    else
+        # If not on debug mode, hide most of it. Important things will still show up.
+        echo "running npm install..." 1>&2
+        npm install > /dev/null
+    fi
+    # Go back to where we belong.
+    cd "$old"
+}
+
+# Cross-platform symlink function. With one parameter, it will check
+# whether the parameter is a symlink. With two parameters, it will create
+# a symlink to a file or directory, with syntax: link $linkname $target
+link() {
+    if [[ -z "$2" ]]; then
+        # Link-checking mode.
+        if windows; then
+            fsutil reparsepoint query "$1" > /dev/null
+        else
+            [[ -h "$1" ]]
+        fi
+    else
+        # Link-creation mode.
+        if windows; then
+            # Windows needs to be told if it's a directory or not. Infer that.
+            if [[ -d "$2" ]]; then
+                cmd <<< "mklink /D \"$1\" \"${2%/}\"" > /dev/null
+            else
+                cmd <<< "mklink \"$1\" \"${2%/}\"" > /dev/null
+            fi
+        else
+            # You know what? I think ln's parameters are backwards.
+            ln -s "$2" "$1"
+        fi
+    fi
+}
+
+# Remove a link, cross-platform.
+rmlink() {
+    if windows; then
+        # Again, Windows needs to be told if it's a file or directory.
+        if [[ -d "$1" ]]; then
+            rmdir "$1";
+        else
+            rm "$1"
+        fi
+    else
+        rm "$1"
+    fi
+}
+
 # HTTP 767
 error() {
     echo "You are drunk. Avoid driving and/or having sex with the blurry people."
@@ -223,6 +328,6 @@ trap stop SIGHUP SIGINT SIGTERM # Exit gracefully.
 
 case "$1" in
     -h|--help|help) help ;;
-    start|stop|restart|info|debug|update) $1 ;;
+    start|stop|restart|info|debug|update|modules) $1 ;;
     *) error ;;
 esac

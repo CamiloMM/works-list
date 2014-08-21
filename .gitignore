@@ -34,3 +34,8 @@ config.json
 # Build artifacts.
 *.tlog
 *.pdb
+
+# I used to commit node_modules, but now I commit platform-dependent directories and
+# symlink node_modules to them on-the-fly. This is because I want to have all the
+# benefits of both worlds. And, guess what, I'm a programmer! So I can.
+node_modules
