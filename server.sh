@@ -269,7 +269,7 @@ modules() {
         npm install
     else
         # If not on debug mode, hide most of it. Important things will still show up.
-        echo "running npm install..." 1>&2
+        echo "checking and installing any missing or outdated packages..." 1>&2
         npm install > /dev/null
     fi
     # Go back to where we belong.
@@ -291,10 +291,11 @@ link() {
         # Link-creation mode.
         if windows; then
             # Windows needs to be told if it's a directory or not. Infer that.
+            # Also: note that we convert `/` to `\`. In this case it's necessary.
             if [[ -d "$2" ]]; then
-                cmd <<< "mklink /D \"$1\" \"${2%/}\"" > /dev/null
+                cmd <<< "mklink /D \"$1\" \"${2//\//\\}\"" > /dev/null
             else
-                cmd <<< "mklink \"$1\" \"${2%/}\"" > /dev/null
+                cmd <<< "mklink \"$1\" \"${2//\//\\}\"" > /dev/null
             fi
         else
             # You know what? I think ln's parameters are backwards.
