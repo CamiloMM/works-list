@@ -48,6 +48,7 @@ router.post('/signup', function(req, res) {
             var user = new User({
                 name:   username,
                 email:  req.body.email || null,
+                md5:    User.md5(req.body.email),
                 hash:   hash,
                 level:  level,
                 invite: invite
