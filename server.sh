@@ -180,7 +180,8 @@ stopped() {
 
 # (Re)start the server in a debugging mode.
 debug() {
-    export DEBUG="${DEBUG:-*}"
+    # By default, ignore most of the noise.
+    export DEBUG="${DEBUG:-*,-express:*,-send,-express-session}"
     debug=true
     echo "Starting node server $GUID in debug mode on port $PORT."
     restart
