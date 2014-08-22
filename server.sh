@@ -224,7 +224,8 @@ modules() {
     cd "$(base)"
     target="deps/native/node_modules-$(uname -s)-$(uname -m)-node-$(node -v)"
     # Check if something exists already.
-    if [[ -e node_modules ]]; then
+    # Note that we need to perform the link check here too, because *long bug story*.
+    if [[ -e node_modules ]] || link node_modules; then
         # Check if it's a link. If it's a link, we'll just remove it.
         # If it's not, we'll also do that but scold the user, too.
         if link node_modules; then
@@ -308,6 +309,8 @@ link() {
 rmlink() {
     if windows; then
         # Again, Windows needs to be told if it's a file or directory.
+        # But first, one must remove the reparsepoint, because *long bug story*
+        fsutil reparsepoint delete "$1"
         if [[ -d "$1" ]]; then
             rmdir "$1";
         else
