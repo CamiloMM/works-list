@@ -5,11 +5,11 @@ var User     = mongoose.model('User');
 var Invite   = mongoose.model('Invite');
 var bcrypt   = require('bcrypt');
 
-router.get('/', function(req, res) {
+router.get('/signup', function(req, res) {
     res.render('signup', {});
 });
 
-router.post('/', function(req, res) {
+router.post('/signup', function(req, res) {
     var invite = req.body.invite;
     var username = req.body.username.toString().trim();
 

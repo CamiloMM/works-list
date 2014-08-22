@@ -48,10 +48,8 @@ app.db.once('open', function callback () {
     app.use(app.passport.session());
     app.use(express.static(path.join(__dirname, 'public')));
 
-    app.use('/'      , require('./routes/index'));
-    app.use('/users' , require('./routes/users'));
-    app.use('/login' , require('./routes/login'));
-    app.use('/signup', require('./routes/signup'));
+    var routes = requireDir('./routes');
+    for (var i in routes) app.use('/', routes[i]);
 
     /// catch 404 and forward to error handler
     app.use(function(req, res, next) {

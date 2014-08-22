@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var User     = mongoose.model('User');
 
 /* GET users listing. */
-router.get('/', function(req, res) {
+router.get('/users', function(req, res) {
     User.find(function(err, users) {
         res.send(users);
     })
