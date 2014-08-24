@@ -161,7 +161,7 @@ debug() {
 # Info about running script.
 info() {
     echo "port:    $port"
-    echo "script:  $(absolute "$script")"
+    echo "data:    $(absolute "$storage")"
     echo "running: $(running && echo yes, $($debug && echo debugging with) process ID $pid || echo no)"
 }
 
