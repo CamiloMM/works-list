@@ -23,14 +23,105 @@ storage='data'
 # Temporary storage for reporting process ID.
 pid=-1
 
-# This is the script that is ran when the database is started.
+# This is the function that is ran when the database is started.
 run() {
-    if $debug; then # Debug mode is meant for running in a console.
-        mongod --journal --smallfiles --port $port --dbpath "$(absolute "$storage")"
+    stdOpts="--auth --journal --smallfiles --port $port"
+    if $debug; then
+        # Debug mode is meant for running in a console. Also, it allows you to
+        # connect to the database remotely for whatever reason you need.
+        mongod $stdOpts --dbpath "$(absolute "$storage")"
     else
-        mongod --journal --smallfiles --port $port --dbpath "$(absolute "$storage")" \
+        mongod $stdOpts --bind_ip 127.0.0.1 --dbpath "$(absolute "$storage")" \
         --logpath "$(absolute "$logfile")" --logappend &> /dev/null &
     fi
+}
+
+# This function is run in preparation to starting the database. It checks for credentials,
+# and creates users if the database does not have them. If the setup cannot be completed,
+# we will tell it to the user and exit.
+setup() {
+    user="$(config dbUser)"
+    pass="$(config dbPass)"
+    if credentials works-list "$user" "$pass"; then
+        # This is the normal working condition. Credentials are valid.
+        # However, if we can also connect without credentials, that's such a huge
+        # hole in security that it warrants telling the user and exiting anyway.
+        if credentials; then
+            echo "There's a glaring hole in your security, because we seemingly" 1>&2
+            echo 'can connect to the database with or without proper credentials.' 1>&2
+            echo 'You should fix this ASAP. Quitting now.'
+            exit 1
+        else
+            return 0 # If we got here, everything's good to go.
+        fi
+    elif credentials admin admin "$pass"; then
+        # We now should create a regular database user.
+        js='use works-list
+            eval("var config = " + cat("config.json") + ";");
+            db.createUser({user:config.dbUser,pwd:config.dbPass,roles:["dbOwner"]});
+            exit'
+        execute works-list "$js"
+        setup # Continue with setup.
+    elif credentials admin; then
+        # We should first set up an admin account. We'll use the same pass as the
+        # regular user. For the purposes of this application, that's totally fine.
+        js='use admin
+            eval("var config = " + cat("config.json") + ";");
+            db.createUser({user:"admin",pwd:config.dbPass,roles:["userAdminAnyDatabase"]});
+            exit'
+        execute admin "$js"
+        setup # Continue with setup.
+    else
+        echo 'The credentials specified in config.json are invalid, and I cannot seem' 1>&2
+        echo 'to be able to use the localhost exception to create users myself.' 1>&2
+        echo 'Please fix this issue, and restart. Exiting now.' 1>&2
+        exit 1
+    fi
+}
+
+# This function gets a property from the config file. If the property does not exist
+# or the config file is not found or has bad syntax, the script will exit with an error.
+config() {
+    old="$PWD"
+    cd "$(base)"
+    if ! node -e "console.log(require('./config.json').$1 || OHNOES)" 2> /dev/null; then
+        echo "We could not get property \"$1\" from the config file." 1>&2
+        # We can be helpful and try to tell the user the reason for this.
+        which node > /dev/null || echo 'Node executable unavailable!' 1>&2
+        [[ -f config.json ]] || echo "config.json not found in \"$PWD\""'!' 1>&2
+        echo 'We will now halt any operations underway.' 1>&2
+        cd "$old"
+        exit 1
+    fi
+    cd "$old"
+}
+
+# Checks that the given db/user/pass credentials work.
+# If you don't pass it credentials, it checks whether localhost exception is in place.
+credentials() {
+    if [[ -n "$3" ]]; then
+        mongo -u "$2" -p "$3" "127.0.0.1:50534/$1" <<< '' &> /dev/null
+    else
+        mongo "127.0.0.1:50534/$1" <<< '' &> /dev/null
+    fi
+}
+
+# Executes commands on the database. The commands are ran in the current directory.
+# If three parameters are given, run as `execute db user pass command`.
+# If one parameter is given, run as `execute db command` without authentication.
+# The output is excluded, but the return code is mongo's.
+execute() {
+    old="$PWD"
+    cd "$(base)"
+    if [[ -z "$3$4" ]]; then
+        mongo "127.0.0.1:50534/$1" <<< "$2" &> /dev/null
+        code=$?
+    else
+        mongo -u "$2" -p "$3" "127.0.0.1:50534/$1" <<< "$4" &> /dev/null
+        code=$?
+    fi
+    cd "$old"
+    return $code
 }
 
 # Sanity check. Mongo tools MUST be available.
@@ -97,6 +188,7 @@ help() {
 # If we can't manage to start it, return false.
 start() {
     if ! running; then
+        setup
         run
         sleep 1 # Give it time to start up in the background.
         running && started
