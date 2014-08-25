@@ -12,7 +12,7 @@ var requireDir   = require('require-dir');
 
 var app = express();
 app.config = require('./config.json');
-mongoose.connect(app.config.dbUrl);
+mongoose.connect(app.config.dbUrl, {user: app.config.dbUser, pass: app.config.dbPass});
 app.db = mongoose.connection;
 app.db.on('error', console.error.bind(console, 'connection error:'));
 app.db.once('open', function callback () {
