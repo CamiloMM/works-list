@@ -42,6 +42,10 @@ run() {
 setup() {
     user="$(config dbUser)"
     pass="$(config dbPass)"
+    oldDebug=$debug # Don't want edge cases.
+    debug=false
+    run
+    sleep 2 # I'm giving it a bit of time just to play on the safe side.
     if credentials works-list "$user" "$pass"; then
         # This is the normal working condition. Credentials are valid.
         # However, if we can also connect without credentials, that's such a huge
@@ -50,9 +54,13 @@ setup() {
             echo "There's a glaring hole in your security, because we seemingly" 1>&2
             echo 'can connect to the database with or without proper credentials.' 1>&2
             echo 'You should fix this ASAP. Quitting now.'
+            stop
             exit 1
         else
-            return 0 # If we got here, everything's good to go.
+            # If we got here, everything's good to go. Clean up.
+            stop
+            debug=$oldDebug
+            return 0
         fi
     elif credentials admin admin "$pass"; then
         # We now should create a regular database user.
@@ -75,6 +83,7 @@ setup() {
         echo 'The credentials specified in config.json are invalid, and I cannot seem' 1>&2
         echo 'to be able to use the localhost exception to create users myself.' 1>&2
         echo 'Please fix this issue, and restart. Exiting now.' 1>&2
+        stop
         exit 1
     fi
 }
