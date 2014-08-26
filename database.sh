@@ -42,10 +42,10 @@ run() {
 setup() {
     user="$(config dbUser)"
     pass="$(config dbPass)"
+    if [[ -z "$checking" ]]; then echo 'Checking db auth credentials...'; checking=true; fi
     oldDebug=$debug # Don't want edge cases.
     debug=false
-    run
-    sleep 2 # I'm giving it a bit of time just to play on the safe side.
+    if ! running; then run; sleep 2; fi # I'm giving it a bit of time to be on the safe side.
     if credentials works-list "$user" "$pass"; then
         # This is the normal working condition. Credentials are valid.
         # However, if we can also connect without credentials, that's such a huge
@@ -54,36 +54,40 @@ setup() {
             echo "There's a glaring hole in your security, because we seemingly" 1>&2
             echo 'can connect to the database with or without proper credentials.' 1>&2
             echo 'You should fix this ASAP. Quitting now.'
-            stop
+            stop &> /dev/null
             exit 1
         else
             # If we got here, everything's good to go. Clean up.
-            stop
+            stop &> /dev/null
             debug=$oldDebug
             return 0
         fi
     elif credentials admin admin "$pass"; then
         # We now should create a regular database user.
+        echo 'Creating db user...'
         js='use works-list
             eval("var config = " + cat("config.json") + ";");
-            db.createUser({user:config.dbUser,pwd:config.dbPass,roles:["dbOwner"]});
+            var role = {role: "dbOwner", db: "works-list"};
+            db.createUser({user: config.dbUser, pwd: config.dbPass, roles: [role]});
             exit'
-        execute works-list "$js"
+        execute admin admin "$pass" "$js" || echo 'Could not create db user!' 1>&2
         setup # Continue with setup.
     elif credentials admin; then
         # We should first set up an admin account. We'll use the same pass as the
         # regular user. For the purposes of this application, that's totally fine.
+        echo 'Creating db admin...'
         js='use admin
             eval("var config = " + cat("config.json") + ";");
-            db.createUser({user:"admin",pwd:config.dbPass,roles:["userAdminAnyDatabase"]});
+            var role = {role: "userAdminAnyDatabase", db: "admin"};
+            db.createUser({user: "admin", pwd:config.dbPass, roles: [role]});
             exit'
-        execute admin "$js"
+        execute admin "$js" || echo 'Could not create db admin!' 1>&2
         setup # Continue with setup.
     else
         echo 'The credentials specified in config.json are invalid, and I cannot seem' 1>&2
         echo 'to be able to use the localhost exception to create users myself.' 1>&2
         echo 'Please fix this issue, and restart. Exiting now.' 1>&2
-        stop
+        stop &> /dev/null
         exit 1
     fi
 }
