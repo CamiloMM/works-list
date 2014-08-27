@@ -1,0 +1,387 @@
+// Short-hand positioning.
+
+.absolute () { position: absolute; }
+.relative () { position: relative; }
+.static   () { position: static;   }
+.fixed    () { position: fixed;    }
+
+// Short-hand display roles.
+
+.no-display         () { display: none;               }
+.block              () { display: block;              }
+.inline             () { display: inline;             }
+.inline-block       () { display: inline-block;       }
+.inline-table       () { display: inline-table;       }
+.run-in             () { display: run-in;             } // I can't understand this one.
+.table              () { display: table;              }
+.table-row          () { display: table-row;          }
+.table-cell         () { display: table-cell;         }
+.table-column       () { display: table-column;       }
+.table-column-group () { display: table-column-group; }
+.table-footer-group () { display: table-footer-group; }
+.table-header-group () { display: table-header-group; }
+.table-row-group    () { display: table-row-group;    }
+
+// Short-hand visibility.
+
+.visible  () { visibility: visible;  }
+.hidden   () { visibility: hidden;   }
+.collapse () { visibility: collapse; }
+
+// Short-hand overflow and whitespace.
+
+.show-overflow   () { overflow: visible; }
+.hide-overflow   () { overflow: hidden;  }
+.auto-overflow   () { overflow: auto;    }
+.scroll-overflow () { overflow: scroll;  }
+
+.show-x-overflow   () { overflow-x: visible; }
+.hide-x-overflow   () { overflow-x: hidden;  }
+.auto-x-overflow   () { overflow-x: auto;    }
+.scroll-x-overflow () { overflow-x: scroll;  }
+.show-y-overflow   () { overflow-y: visible; }
+.hide-y-overflow   () { overflow-y: hidden;  }
+.auto-y-overflow   () { overflow-y: auto;    }
+.scroll-y-overflow () { overflow-y: scroll;  }
+
+.hide-x () { overflow-x: hidden; }
+.hide-y () { overflow-y: hidden; }
+.hide-h () { overflow-x: hidden; }
+.hide-v () { overflow-y: hidden; }
+
+.scroll   () { overflow:   scroll; }
+.scroll-x () { overflow-x: scroll; }
+.scroll-y () { overflow-y: scroll; }
+.scroll-h () { overflow-x: scroll; }
+.scroll-v () { overflow-y: scroll; }
+
+.text-clip () { text-overflow: clip; }
+.ellipsis  () { text-overflow: ellipsis; }
+
+.wrap     () { white-space: normal;   }
+.no-wrap  () { white-space: nowrap;   }
+.pre      () { white-space: pre;      }
+.pre-line () { white-space: pre-line; }
+.pre-wrap () { white-space: pre-wrap; }
+
+// Font short-hands.
+
+.italic     () { font-style:  italic; }
+.not-italic () { font-style:  normal; }
+.bold       () { font-weight: bold;   }
+.not-bold   () { font-weight: normal; }
+.light      () { font-weight: 300;    }
+
+.no-decoration () { text-decoration: none;         }
+.no-underline  () { text-decoration: none;         }
+.underline     () { text-decoration: underline;    }
+.overline      () { text-decoration: overline;     }
+.line-through  () { text-decoration: line-through; }
+
+// Short-hand docking.
+
+.top0    () { top:    0; }
+.right0  () { right:  0; }
+.bottom0 () { bottom: 0; }
+.left0   () { left:   0; }
+
+.topleft     (@top, @left )    { top:    @top;    left:  @left;  }
+.topright    (@top, @right)    { top:    @top;    right: @right; }
+.bottomleft  (@bottom, @left ) { bottom: @bottom; left:  @left;  }
+.bottomright (@bottom, @right) { bottom: @bottom; right: @right; }
+
+.topleft     (@both: 0) { .topleft    (@both, @both); }
+.topright    (@both: 0) { .topright   (@both, @both); }
+.bottomleft  (@both: 0) { .bottomleft (@both, @both); }
+.bottomright (@both: 0) { .bottomright(@both, @both); }
+
+.dock-top    () { .top0;   .right0;  .left0;   }
+.dock-right  () { .top0;   .right0;  .bottom0; }
+.dock-bottom () { .right0; .bottom0; .left0;   }
+.dock-left   () { .top0;   .bottom0; .left0;   }
+
+.dock-top    (@height) { .top0;   .right0;  .left0;   height: @height; }
+.dock-right  (@width ) { .top0;   .right0;  .bottom0; width:  @width;  }
+.dock-bottom (@height) { .right0; .bottom0; .left0;   height: @height; }
+.dock-left   (@width ) { .top0;   .bottom0; .left0;   width:  @width;  }
+
+.sides (@top, @right, @bottom, @left) { top: @top; right: @right; bottom: @bottom; left: @left; }
+.sides (@vert, @horiz) { top: @vert; right: @horiz; bottom: @vert; left: @horiz; }
+.sides (@all) { top: @all; right: @all; bottom: @all; left: @all; }
+
+.fill () { .sides(0, 0, 0, 0); }
+
+// Short-hand sizing.
+
+.size (@height, @width) { height: @height; width: @width; }
+.size (@size)           { .size(@size, @size);            }
+
+.half-w () { width:   50%; }
+.half-h () { height:  50%; }
+.full-w () { width:  100%; }
+.full-h () { height: 100%; }
+
+.half () { .size( 50%); }
+.full () { .size(100%); }
+
+// Short-hand z-index.
+
+.above (@level: 1) { z-index:  512 * @level; }
+.below (@level: 1) { z-index: -512 * @level; }
+
+// Background short-hands.
+
+.bkg     (@bkg)   { background: @bkg;                }
+.no-bkg  ()       { .bkg(transparent);               }
+.bkg-url (@url)   { background-image: url("@{url}"); }
+.bkg-pos (@x, @y) { background-position: @x @y;      }
+
+.repeat    () { background-repeat: repeat;    }
+.repeat-x  () { background-repeat: repeat-x;  }
+.repeat-y  () { background-repeat: repeat-y;  }
+.no-repeat () { background-repeat: no-repeat; }
+
+// Background-clip and background-origin. These are so verbose due to LESS string concat being stupid.
+
+// Oh, and older versions of Gecko and Webkit use the outdated spec - without "-box". This requires
+// more property names. But still if LESS would just let me concatenate two strings without
+// a space in the middle or quotes around them... argh.
+
+.bkg-clip (border-box)  { -webkit-background-clip: border;  -webkit-background-clip:  border-box;
+                             -moz-background-clip: border;     -moz-background-clip:  border-box;
+                                                                    background-clip:  border-box;}
+.bkg-clip (padding-box) { -webkit-background-clip: padding; -webkit-background-clip: padding-box;
+                             -moz-background-clip: padding;    -moz-background-clip: padding-box;
+                                                                    background-clip: padding-box;}
+.bkg-clip (content-box) { -webkit-background-clip: content; -webkit-background-clip: content-box;
+                             -moz-background-clip: content;    -moz-background-clip: content-box;
+                                                                    background-clip: content-box;}
+																	
+.bkg-origin (border-box)  { -webkit-background-origin: border;  -webkit-background-origin:  border-box;
+                               -moz-background-origin: border;     -moz-background-origin:  border-box;
+                                                                        background-origin:  border-box;}
+.bkg-origin (padding-box) { -webkit-background-origin: padding; -webkit-background-origin: padding-box;
+                               -moz-background-origin: padding;    -moz-background-origin: padding-box;
+                                                                        background-origin: padding-box;}
+.bkg-origin (content-box) { -webkit-background-origin: content; -webkit-background-origin: content-box;
+                               -moz-background-origin: content;    -moz-background-origin: content-box;
+                                                                        background-origin: content-box;}
+
+// For layout debugging.
+
+.debug-red   () { background-color: rgba(235, 117, 131, 0.75); background-color: #f595a0\9; }
+.debug-green () { background-color: rgba(146, 224, 137, 0.75); background-color: #92e089\9; }
+.debug-blue  () { background-color: rgba(191, 211, 245, 0.75); background-color: #bfddf5\9; }
+
+// Vertical alignment short-hands.
+
+.v-align (@value) { vertical-align: @value; }
+
+.v-align-baseline    () { .v-align(baseline);    }
+.v-align-sub         () { .v-align(sub);         }
+.v-align-super       () { .v-align(super);       }
+.v-align-middle      () { .v-align(middle);      }
+.v-align-top         () { .v-align(top);         }
+.v-align-bottom      () { .v-align(bottom);      }
+.v-align-text-top    () { .v-align(text-top);    }
+.v-align-text-bottom () { .v-align(text-bottom); }
+
+// Text alignment short-hands.
+
+.text-left    () { text-align: left;    }
+.text-right   () { text-align: right;   }
+.text-center  () { text-align: center;  }
+.text-justify () { text-align: justify; }
+
+// Cross-browser opacity with fix for IE8 and ClearType/PNGs "blackness leak".
+// Note: @chroma-fix (if specified) MUST be a color in SIX hex digits such as "#123ABC".
+
+.opacity (@value, @chroma-fix: #FDFDFD) {
+	
+	// At-least-halfway-decent browsers:
+	opacity: @value;
+	
+	// Microsoft Internet Explorer:
+	@ms-value: @value * 100;
+	background-color: @chroma-fix ~"\9";
+	-ms-filter:"Chroma(Color=@{chroma-fix}) Alpha(Opacity=@{ms-value})";
+	
+}
+
+// Cross-browser CSS3 transitions.
+
+.transition (...) {
+    // As of writing, the only current browsers needing prefixes are android
+    // and blackberry browsers. Yay! http://caniuse.com/css-transitions
+    -webkit-transition: @arguments;
+    // -moz-transition: @arguments;
+    //  -ms-transition: @arguments;
+    //   -o-transition: @arguments;
+            transition: @arguments;
+}
+
+// Penner equations approximated into cubic beziers by Matthew Lein:
+@easeInCubic    : cubic-bezier(0.550, 0.055, 0.675, 0.190); // Cubic
+@easeOutCubic   : cubic-bezier(0.215, 0.610, 0.355, 1.000);
+@easeInOutCubic : cubic-bezier(0.645, 0.045, 0.355, 1.000);
+@easeInCirc     : cubic-bezier(0.600, 0.040, 0.980, 0.335); // Circ
+@easeOutCirc    : cubic-bezier(0.075, 0.820, 0.165, 1.000);
+@easeInOutCirc  : cubic-bezier(0.785, 0.135, 0.150, 0.860);
+@easeInExpo     : cubic-bezier(0.950, 0.050, 0.795, 0.035); // Expo
+@easeOutExpo    : cubic-bezier(0.190, 1.000, 0.220, 1.000);
+@easeInOutExpo  : cubic-bezier(1.000, 0.000, 0.000, 1.000);
+@easeInQuad     : cubic-bezier(0.550, 0.085, 0.680, 0.530); // Quad
+@easeOutQuad    : cubic-bezier(0.250, 0.460, 0.450, 0.940);
+@easeInOutQuad  : cubic-bezier(0.455, 0.030, 0.515, 0.955);
+@easeInQuart    : cubic-bezier(0.895, 0.030, 0.685, 0.220); // Quart
+@easeOutQuart   : cubic-bezier(0.165, 0.840, 0.440, 1.000);
+@easeInOutQuart : cubic-bezier(0.770, 0.000, 0.175, 1.000);
+@easeInQuint    : cubic-bezier(0.755, 0.050, 0.855, 0.060); // Quint
+@easeOutQuint   : cubic-bezier(0.230, 1.000, 0.320, 1.000);
+@easeInOutQuint : cubic-bezier(0.860, 0.000, 0.070, 1.000);
+@easeInSine     : cubic-bezier(0.470, 0.000, 0.745, 0.715); // Sine
+@easeOutSine    : cubic-bezier(0.390, 0.575, 0.565, 1.000);
+@easeInOutSine  : cubic-bezier(0.445, 0.050, 0.550, 0.950);
+@easeInBack     : cubic-bezier(0.600,-0.280, 0.735, 0.045); // Back
+@easeOutBack    : cubic-bezier(0.175, 0.885, 0.320, 1.275);
+@easeInOutBack  : cubic-bezier(0.680,-0.550, 0.265, 1.550);
+
+// Cross-browser CSS3 border-radius with bkg bleed fix.
+
+.border-radius(...) {
+      -webkit-border-radius: @arguments;
+         -moz-border-radius: @arguments;
+              border-radius: @arguments;
+	// Because of http://tumble.sneak.co.nz/post/928998513/fixing-the-background-bleed
+    .bkg-clip(padding-box);
+}
+
+// CSS3 box-shadow.
+
+.box-shadow(...) {
+    -webkit-box-shadow: @arguments;
+       -moz-box-shadow: @arguments;
+            box-shadow: @arguments;
+}
+
+
+// CSS3 placeholder color.
+
+.placeholder(@color: #ccc) {
+	&::-webkit-input-placeholder { color: @color; }
+	&:-moz-placeholder { color: @color; }
+}
+
+// Disable/enable text selection, with fix for Firefox.
+
+.user-select-none () {
+	-webkit-touch-callout:      none;
+	  -webkit-user-select:      none;
+	     -moz-user-select: -moz-none; // Allow override of children's selection - http://goo.gl/NLTI5
+	      -ms-user-select:      none;
+
+	// Opera is likely to use one of these two in the future:
+	       -o-user-select:      none;
+	          user-select:      none;
+}
+
+.user-select-text () {
+	-webkit-touch-callout: default;
+	  -webkit-user-select:    text;
+	     -moz-user-select:    text;
+	      -ms-user-select:    text;
+
+	// Opera is likely to use one of these two in the future:
+	       -o-user-select:    text;
+	          user-select:    text;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//                           2013 Additions                             //
+//////////////////////////////////////////////////////////////////////////
+
+
+
+// Smart centering.
+
+.center-h (@width) {
+    .relative;
+    width: @width;
+    left: 50%;
+    margin-left: 0px - @width / 2 ;
+}
+
+.center-v (@height) {
+    .relative;
+    height: @height;
+    top: 50%;
+    margin-top: 0px - @height / 2 ;
+}
+
+// Padding for the lazy.
+
+.pad(@amount) { padding: @amount; }
+.pad0() { .pad(0); }
+
+// Line height shorthand.
+
+.line (@size) { line-height: @size; }
+
+// Disables a link. http://caniuse.com/#feat=pointer-events
+
+.disable () { pointer-events: none; cursor: default; }
+
+// Why did I never knew how to do this before?
+
+.smart-center() {
+    vertical-align: bottom;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    margin: auto;
+    .fill;
+}
+
+// Opacity for the lazy.
+
+.hide        () { opacity: 0;    }
+.show        () { opacity: 1;    }
+.translucent () { opacity: 0.25; }
+.translucid  () { opacity: 0.25; }
+.semiopaque  () { opacity: 0.5;  }
+.semi-opaque () { opacity: 0.5;  }
+.opaque      () { opacity: 0.75; }
+
+// Text orientation.
+
+.rtl () { direction: rtl; }
+.ltr () { direction: ltr; }
+
+// Resets an element.
+
+.reset() {
+    margin: 0;
+    padding: 0;
+}
+
+// Goddamn lists.
+
+.clean-list() { list-style-type: none; }
+
+// Case for the lazy.
+
+.lowercase () { text-transform: lowercase;  }
+.uppercase () { text-transform: uppercase;  }
+.capitalize() { text-transform: capitalize; }
+.small-caps() { font-variant:   small-caps; }
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//                           2014 Additions                             //
+//////////////////////////////////////////////////////////////////////////
+
+
+
