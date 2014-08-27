@@ -1,5 +1,3 @@
-li(class='user-block')
-    img(src=user.gravatar())
-    div= user.name
-    div= user.email
-    div= 'level ' + user.level
+li
+    img(src=user.gravatar(256), height=128)
+    div(class='name')= user.name
