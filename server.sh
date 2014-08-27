@@ -271,8 +271,8 @@ modules() {
         npm install
     else
         # If not on debug mode, hide most of it. Important things will still show up.
-        echo "checking and installing any missing or outdated packages..." 1>&2
-        npm install > /dev/null
+        echo "Checking and installing any missing or outdated packages..." 1>&2
+        npm install > /dev/null && echo "Package check complete." 1>&2
     fi
     # Go back to where we belong.
     cd "$old"
