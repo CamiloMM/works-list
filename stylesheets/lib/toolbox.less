@@ -131,10 +131,12 @@
 
 // Background short-hands.
 
-.bkg     (@bkg)   { background: @bkg;                }
-.no-bkg  ()       { .bkg(transparent);               }
-.bkg-url (@url)   { background-image: url("@{url}"); }
-.bkg-pos (@x, @y) { background-position: @x @y;      }
+.bkg     (@bkg)        { background: @bkg;                 }
+.no-bkg  ()            { .bkg(transparent);                }
+.bkg-size(@size)       { background-size: @size;           }
+.bkg-url (@url)        { background-image: url("@{url}");  }
+.bkg-url (@url, @size) { .bkg-url(@url); .bkg-size(@size); }
+.bkg-pos (@x, @y)      { background-position: @x @y;       }
 
 .repeat    () { background-repeat: repeat;    }
 .repeat-x  () { background-repeat: repeat-x;  }
