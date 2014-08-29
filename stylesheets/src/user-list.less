@@ -6,13 +6,13 @@
     margin-top: 20px;
 
     li {
-        .bkg(#CCC);
+        .bkg(@mediumGrey);
         .relative;
         height: 128px + 16;
         margin: 0 0 20px 0;
 
         img {
-            .bkg(#D41A33);
+            .bkg(@stressColor);
             .dock-left(absolute, 128px);
             padding: 8px;
         }
@@ -22,10 +22,10 @@
         }
 
         .name {
-            .bkg(#D41A33);
+            .bkg(@stressColor);
             .block;
             .pad(4px 8px);
-            color: #FFF;
+            color: @stressContrast;
             font: bold 28px/32px sans-serif;
             height: 32px;
         }
