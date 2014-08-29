@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
-var crypto   = require("crypto");
+var crypto   = require('crypto');
+var bcrypt   = require('bcrypt');
 
 var userSchema = new Schema({
     name   : String, // still didn't decide on username restrictions.

@@ -17,4 +17,8 @@ passport.use(new LocalStrategy(function(username, password, done) {
     });
 }));
 
+// These are required, but currently I'm not doing anything here.
+passport.serializeUser(function(user, done) { done(null, user); });
+passport.deserializeUser(function(user, done) { done(null, user); });
+
 module.exports = passport;
