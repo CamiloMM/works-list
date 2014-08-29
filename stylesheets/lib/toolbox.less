@@ -111,6 +111,58 @@
 
 .fill () { .sides(0, 0, 0, 0); }
 
+// Same as above, but with absolute and fixed switches.
+
+.top0        (absolute) { .absolute; .top0; }
+.right0      (absolute) { .absolute; .right0; }
+.bottom0     (absolute) { .absolute; .bottom0; }
+.left0       (absolute) { .absolute; .left0; }
+.topleft     (absolute, @top, @left ) { .absolute; .topleft(@top, @left); }
+.topright    (absolute, @top, @right) { .absolute; .topright(@top, @right); }
+.bottomleft  (absolute, @bottom, @left ) { .absolute; .bottomleft(@bottom, @left); }
+.bottomright (absolute, @bottom, @right) { .absolute; .bottomright(@bottom, @right); }
+.topleft     (absolute, @both: 0) { .absolute; .topleft(@both); }
+.topright    (absolute, @both: 0) { .absolute; .topright(@both); }
+.bottomleft  (absolute, @both: 0) { .absolute; .bottomleft(@both); }
+.bottomright (absolute, @both: 0) { .absolute; .bottomright(@both); }
+.dock-top    (absolute) { .absolute; .dock-top; }
+.dock-right  (absolute) { .absolute; .dock-right; }
+.dock-bottom (absolute) { .absolute; .dock-bottom; }
+.dock-left   (absolute) { .absolute; .dock-left; }
+.dock-top    (absolute, @height) { .absolute; .dock-top(@height); }
+.dock-right  (absolute, @width ) { .absolute; .dock-right(@width); }
+.dock-bottom (absolute, @height) { .absolute; .dock-bottom(@height); }
+.dock-left   (absolute, @width ) { .absolute; .dock-left(@width); }
+.sides       (absolute, @top, @right, @bottom, @left) { .absolute; .sides(@top, @right, @bottom, @left); }
+.sides       (absolute, @vert, @horiz) { .absolute; .sides(@vert, @horiz); }
+.sides       (absolute, @all) { .absolute; .sides(@all); }
+.fill        (absolute) { .absolute; .fill; }
+
+.top0        (fixed) { .fixed; .top0; }
+.right0      (fixed) { .fixed; .right0; }
+.bottom0     (fixed) { .fixed; .bottom0; }
+.left0       (fixed) { .fixed; .left0; }
+.topleft     (fixed, @top, @left ) { .fixed; .topleft(@top, @left); }
+.topright    (fixed, @top, @right) { .fixed; .topright(@top, @right); }
+.bottomleft  (fixed, @bottom, @left ) { .fixed; .bottomleft(@bottom, @left); }
+.bottomright (fixed, @bottom, @right) { .fixed; .bottomright(@bottom, @right); }
+.topleft     (fixed, @both: 0) { .fixed; .topleft(@both); }
+.topright    (fixed, @both: 0) { .fixed; .topright(@both); }
+.bottomleft  (fixed, @both: 0) { .fixed; .bottomleft(@both); }
+.bottomright (fixed, @both: 0) { .fixed; .bottomright(@both); }
+.dock-top    (fixed) { .fixed; .dock-top; }
+.dock-right  (fixed) { .fixed; .dock-right; }
+.dock-bottom (fixed) { .fixed; .dock-bottom; }
+.dock-left   (fixed) { .fixed; .dock-left; }
+.dock-top    (fixed, @height) { .fixed; .dock-top(@height); }
+.dock-right  (fixed, @width ) { .fixed; .dock-right(@width); }
+.dock-bottom (fixed, @height) { .fixed; .dock-bottom(@height); }
+.dock-left   (fixed, @width ) { .fixed; .dock-left(@width); }
+.sides       (fixed, @top, @right, @bottom, @left) { .fixed; .sides(@top, @right, @bottom, @left); }
+.sides       (fixed, @vert, @horiz) { .fixed; .sides(@vert, @horiz); }
+.sides       (fixed, @all) { .fixed; .sides(@all); }
+.fill        (fixed) { .fixed; .fill; }
+
 // Short-hand sizing.
 
 .size (@height, @width) { height: @height; width: @width; }
