@@ -439,3 +439,7 @@
 
 
 
+// It's pretty common to specify front and background together.
+// The ordering of the parameters was chosen because "black on white"
+// or "white on black" is more common than, say, "white with black on top"
+.colors(@fg, @bg) { color: @fg; background-color: @bg; }
