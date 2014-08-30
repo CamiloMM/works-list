@@ -43,10 +43,17 @@ app.db.once('open', function callback () {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(cookieParser());
+    app.use(express.static(path.join(__dirname, 'public')));
     app.use(session(sessionSettings));
     app.use(app.passport.initialize());
     app.use(app.passport.session());
-    app.use(express.static(path.join(__dirname, 'public')));
+
+    // Load local variables for templates.
+    app.all('*', function(req, res, next) {
+        res.locals.loggedIn = !!req.user;
+        res.locals.currentUser = req.user;
+        next();
+    });
 
     var routes = requireDir('./routes');
     for (var i in routes) app.use('/', routes[i]);
