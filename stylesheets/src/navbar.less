@@ -11,27 +11,25 @@
 }
 
 #account {
-    .colors(@stressContrast, @stressColor);
     .dock-right(absolute);
+    padding-right: 3px;
 
     .avatar {
         padding: 4px;
     }
 
-    .separator {
-        .bkg(@stressContrast);
-        .inline-block;
-        .size(4px, 36px);
-        margin: 6px 0;
-    }
-
     .entry {
+        .colors(@stressContrast, @stressColor);
         .inline-block;
         .no-underline;
         .v-align-top;
-        color: @stressContrast;
-        font: bold 28px/32px sans-serif;
+        font: bold 24px/32px sans-serif;
         height: 32px;
-        padding: 8px 14px;
+        margin: 6px 4px;
+        padding: 2px 8px;
+
+        &:hover {
+            .bkg(@stressAction);
+        }
     }
 }
