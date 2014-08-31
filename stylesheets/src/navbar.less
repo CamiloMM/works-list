@@ -6,8 +6,14 @@
     border-bottom: 2px solid @lightGrey;
 
     .logo {
+        .bkg(@stressColor);
         .dock-left(absolute, 48px);
         .img-logo;
+        .no-outline;
+
+        &:hover, &:focus {
+            background-color: @stressAction;
+        }
     }
 
     h1 {
@@ -30,6 +36,7 @@
     .entry {
         .colors(@stressContrast, @stressColor);
         .inline-block;
+        .no-outline;
         .no-underline;
         .v-align-top;
         font: bold 24px/32px sans-serif;
@@ -37,8 +44,17 @@
         margin: 6px 4px;
         padding: 2px 8px;
 
-        &:hover {
+        &:hover, &:active {
             .bkg(@stressAction);
         }
+
+        /*&:focus {
+            outline: 1px solid @lightGrey;
+            box-shadow: inset 0 0 0 1px @lightGrey,
+                        inset -1px 0 0 1px @lightGrey,
+                        inset 1px 0 0 1px @lightGrey;
+        }*/
+
+        &:focus { .bkg(@stressAction); }
     }
 }

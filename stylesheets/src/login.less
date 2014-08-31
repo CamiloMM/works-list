@@ -12,7 +12,7 @@
     label {
         .inline-block;
         .single-line;
-        .user-select-none;
+        .no-selection;
         .v-align-middle;
         font: bold 28px/32px sans-serif;
         width: 200px;
@@ -22,6 +22,7 @@
         .no-border;
         .v-align-middle;
         height: 24px;
+        outline: none;
     }
 
     .field {
@@ -29,6 +30,10 @@
         color: @textColor;
         font: bold 24px/28px monospace;
         padding: 0 4px;
+
+        &:focus {
+            box-shadow: 0 0 0 3px @stressAction;
+        }
     }
 
     .submit {
@@ -41,6 +46,10 @@
             height: 36px;
             margin: 12px;
             padding: 0 8px;
+
+            &:focus {
+                .bkg(@stressAction);
+            }
         }
     }
 }
