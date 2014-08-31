@@ -6,7 +6,7 @@ var Invite   = mongoose.model('Invite');
 var bcrypt   = require('bcrypt');
 
 router.get('/signup', function(req, res) {
-    res.render('signup', {});
+    res.render('signup', {title: 'Sign Up'});
 });
 
 router.post('/signup', function(req, res) {
