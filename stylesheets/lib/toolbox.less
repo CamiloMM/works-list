@@ -359,14 +359,14 @@
     .relative;
     width: @width;
     left: 50%;
-    margin-left: 0px - @width / 2 ;
+    margin-left: -@width / 2 ;
 }
 
 .center-v (@height) {
     .relative;
     height: @height;
     top: 50%;
-    margin-top: 0px - @height / 2 ;
+    margin-top: -@height / 2 ;
 }
 
 // Padding for the lazy.
@@ -443,3 +443,6 @@
 .single-line (clip)     { .no-wrap; .hide-overflow; .text-clip; }
 .single-line (ellipsis) { .no-wrap; .hide-overflow; .ellipsis;  }
 .single-line () { .single-line (ellipsis); } // The most common one, I guess.
+
+// Exclude borders. Useful for forms.
+.no-border() { border: none; }
