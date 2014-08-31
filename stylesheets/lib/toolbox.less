@@ -326,17 +326,15 @@
 	&:-moz-placeholder { color: @color; }
 }
 
-// Disable/enable text selection, with fix for Firefox.
+// Disable/enable text selection. Updated 2014.08.30.
 
 .user-select-none () {
-	-webkit-touch-callout:      none;
-	  -webkit-user-select:      none;
-	     -moz-user-select: -moz-none; // Allow override of children's selection - http://goo.gl/NLTI5
-	      -ms-user-select:      none;
-
-	// Opera is likely to use one of these two in the future:
-	       -o-user-select:      none;
-	          user-select:      none;
+	-webkit-touch-callout: none;
+	  -webkit-user-select: none;
+	     -moz-user-select: none;
+	      -ms-user-select: none;
+	          user-select: none;
+    cursor: default;
 }
 
 .user-select-text () {
@@ -344,9 +342,6 @@
 	  -webkit-user-select:    text;
 	     -moz-user-select:    text;
 	      -ms-user-select:    text;
-
-	// Opera is likely to use one of these two in the future:
-	       -o-user-select:    text;
 	          user-select:    text;
 }
 
@@ -443,3 +438,8 @@
 // The ordering of the parameters was chosen because "black on white"
 // or "white on black" is more common than, say, "white with black on top"
 .colors(@fg, @bg) { color: @fg; background-color: @bg; }
+
+// For when you want text to occupy just one line.
+.single-line (clip)     { .no-wrap; .hide-overflow; .text-clip; }
+.single-line (ellipsis) { .no-wrap; .hide-overflow; .ellipsis;  }
+.single-line () { .single-line (ellipsis); } // The most common one, I guess.

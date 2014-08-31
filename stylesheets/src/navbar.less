@@ -2,11 +2,20 @@
     .above;
     .bkg(@darkGrey);
     .dock-top(fixed, 48px);
+    .user-select-none;
     border-bottom: 2px solid @lightGrey;
 
     .logo {
         .dock-left(absolute, 48px);
         .img-logo;
+    }
+
+    h1 {
+        .fill(absolute);
+        .single-line(ellipsis);
+        color: @lightGrey;
+        font: bold 28px/36px sans-serif;
+        margin: 6px 240px 6px 56px;
     }
 }
 
