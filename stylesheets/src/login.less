@@ -14,7 +14,7 @@
         .single-line;
         .no-selection;
         .v-align-middle;
-        font: bold 28px/32px sans-serif;
+        font: 600 28px/32px @baseFont;
         width: 200px;
     }
 
@@ -28,7 +28,7 @@
     .field {
         .size(240px, 28px);
         color: @textColor;
-        font: bold 24px/28px monospace;
+        font: 400 24px/28px monospace;
         padding: 0 4px;
 
         &:focus {
@@ -42,12 +42,14 @@
 
         input {
             .colors(@stressContrast, @stressColor);
-            font: bold 28px/36px sans-serif;
+            .table-cell;
+            .v-align-bottom;
+            font: 700 24px/36px @baseFont;
             height: 36px;
             margin: 12px;
             padding: 0 8px;
 
-            &:focus {
+            &:hover, &:focus {
                 .bkg(@stressAction);
             }
         }
