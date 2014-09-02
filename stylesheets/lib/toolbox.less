@@ -78,36 +78,36 @@
 .overline      () { text-decoration: overline;     }
 .line-through  () { text-decoration: line-through; }
 
-// Short-hand docking.
+// Short-hand docking. (Some guarded against the positioned versions below.)
 
 .top0    () { top:    0; }
 .right0  () { right:  0; }
 .bottom0 () { bottom: 0; }
 .left0   () { left:   0; }
 
-.topleft     (@top, @left )    { top:    @top;    left:  @left;  }
-.topright    (@top, @right)    { top:    @top;    right: @right; }
-.bottomleft  (@bottom, @left ) { bottom: @bottom; left:  @left;  }
-.bottomright (@bottom, @right) { bottom: @bottom; right: @right; }
+.topleft     (@top, @left )    when not (iskeyword(@top))    { top:    @top;    left:  @left;  }
+.topright    (@top, @right)    when not (iskeyword(@top))    { top:    @top;    right: @right; }
+.bottomleft  (@bottom, @left ) when not (iskeyword(@bottom)) { bottom: @bottom; left:  @left;  }
+.bottomright (@bottom, @right) when not (iskeyword(@bottom)) { bottom: @bottom; right: @right; }
 
-.topleft     (@both: 0) { .topleft    (@both, @both); }
-.topright    (@both: 0) { .topright   (@both, @both); }
-.bottomleft  (@both: 0) { .bottomleft (@both, @both); }
-.bottomright (@both: 0) { .bottomright(@both, @both); }
+.topleft     (@both: 0) when not (iskeyword(@both)) { .topleft    (@both, @both); }
+.topright    (@both: 0) when not (iskeyword(@both)) { .topright   (@both, @both); }
+.bottomleft  (@both: 0) when not (iskeyword(@both)) { .bottomleft (@both, @both); }
+.bottomright (@both: 0) when not (iskeyword(@both)) { .bottomright(@both, @both); }
 
 .dock-top    () { .top0;   .right0;  .left0;   }
 .dock-right  () { .top0;   .right0;  .bottom0; }
 .dock-bottom () { .right0; .bottom0; .left0;   }
 .dock-left   () { .top0;   .bottom0; .left0;   }
 
-.dock-top    (@height) { .top0;   .right0;  .left0;   height: @height; }
-.dock-right  (@width ) { .top0;   .right0;  .bottom0; width:  @width;  }
-.dock-bottom (@height) { .right0; .bottom0; .left0;   height: @height; }
-.dock-left   (@width ) { .top0;   .bottom0; .left0;   width:  @width;  }
+.dock-top    (@height) when not (iskeyword(@height)) { .top0;   .right0;  .left0;   height: @height; }
+.dock-right  (@width ) when not ( iskeyword(@width)) { .top0;   .right0;  .bottom0; width:  @width;  }
+.dock-bottom (@height) when not (iskeyword(@height)) { .right0; .bottom0; .left0;   height: @height; }
+.dock-left   (@width ) when not ( iskeyword(@width)) { .top0;   .bottom0; .left0;   width:  @width;  }
 
-.sides (@top, @right, @bottom, @left) { top: @top; right: @right; bottom: @bottom; left: @left; }
-.sides (@vert, @horiz) { top: @vert; right: @horiz; bottom: @vert; left: @horiz; }
-.sides (@all) { top: @all; right: @all; bottom: @all; left: @all; }
+.sides (@top, @right, @bottom, @left) when not (iskeyword(@top)) { top: @top; right: @right; bottom: @bottom; left: @left; }
+.sides (@vert, @horiz) when not (iskeyword(@vert)) { top: @vert; right: @horiz; bottom: @vert; left: @horiz; }
+.sides (@all) when not (iskeyword(@all)) { top: @all; right: @all; bottom: @all; left: @all; }
 
 .fill () { .sides(0, 0, 0, 0); }
 
