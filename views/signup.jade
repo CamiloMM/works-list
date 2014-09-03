@@ -1,19 +1,21 @@
 extends layout
 
 block content
-    h1 Works-List New User Signup
-    form(action='/signup', method='post')
+    form#signup(action='/signup', method='post')
         div
             label Username:
-            input(type='text', name='username')
+            input.field(type='text', name='username' placeholder='Username')
         div
             label Email:
-            input(type='text', name='email')
+            input.field(type='email', name='email' placeholder='Email')
         div
             label Password:
-            input(type='password', name='password')
+            input.field(type='password', name='password' placeholder='Password')
+        div
+            label Confirm it:
+            input.field(type='password', name='passwordConfirmation' placeholder='Password again')
         div
             label Invite:
-            input(type='text', name='invite')
-        div
+            input.field(type='text', name='invite' placeholder='Invite code')
+        div.submit
             input(type='submit', value='Sign Up')
