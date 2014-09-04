@@ -42,6 +42,9 @@ origin='git://github.com/CamiloMM/works-list.git'
 # Temporary storage for reporting process ID.
 pid=-1
 
+# This will later tells us if we're restarting.
+restarting=false
+
 # This is the script that is ran when the server is started.
 run() {
     if $debug; then # Debug mode is meant for running in a console.
@@ -119,9 +122,13 @@ help() {
 # Start the server.
 # If we can't manage to start it, return false.
 start() {
-    # Make sure we have all packages installed.
-    modules
-    "$(absolute database.sh)" start
+    # Make sure we have all packages installed, except if we're restarting.
+    if $restarting; then
+        "$(absolute database.sh)" start fast
+    else
+        modules
+        "$(absolute database.sh)" start
+    fi
     if ! running; then
         run
         sleep 1 # Give it time to start up in the background.
@@ -157,6 +164,7 @@ stop() {
 # Restart the server.
 restart() {
     if running; then
+        restarting=true
         if stop; then
             start
         else

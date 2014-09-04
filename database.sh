@@ -23,6 +23,10 @@ storage='data'
 # Temporary storage for reporting process ID.
 pid=-1
 
+# There's an extra flag for internal use only: database.sh start fast
+# (it tells us to skip the DB auth check).
+if [[ "$2" == fast ]]; then fast=true; else fast=false; fi
+
 # This is the function that is ran when the database is started.
 run() {
     stdOpts="--auth --journal --smallfiles --port $port"
@@ -201,7 +205,7 @@ help() {
 # If we can't manage to start it, return false.
 start() {
     if ! running; then
-        setup
+        if ! $fast; then setup; fi # Don't perform setup in fast mode.
         run
         sleep 1 # Give it time to start up in the background.
         running && started
@@ -237,6 +241,8 @@ stop() {
 # If we can't manage to stop it, or start after stopping, return false.
 restart() {
     if running; then
+        # Restarting the DB also enables fast mode.
+        fast=true
         if stop; then
             start
         else
