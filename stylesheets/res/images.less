@@ -5,10 +5,14 @@
     background-image: @uri;
 }
 
+.svg(@path) {
+    .image(data-uri('image/svg+xml;charset=UTF-8', @path));
+}
+
 .img-logo() {
-    .image(data-uri('res/logo.svg'));
+    .svg('res/logo.svg');
 }
 
 .img-question-circle() {
-    .image(data-uri('res/question-circle.svg'));
+    .svg('res/question-circle.svg');
 }
