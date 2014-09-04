@@ -1,9 +1,14 @@
 
 .image(@uri) {
     .bkg-size(100%);
+    .no-repeat;
     background-image: @uri;
 }
 
 .img-logo() {
     .image(data-uri('res/logo.svg'));
+}
+
+.img-question-circle() {
+    .image(data-uri('res/question-circle.svg'));
 }
