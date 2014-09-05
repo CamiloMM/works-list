@@ -3,8 +3,7 @@ html
     head
         title= title
         include favicons
-        //-link(rel='stylesheet', href='/stylesheets/all.css')
-        style: include:less ../stylesheets/all.less
+        link(rel='stylesheet', href='/static/' + get('css').md5 + '.css')
     body
         include navbar
         #content
