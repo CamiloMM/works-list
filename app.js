@@ -92,4 +92,6 @@ app.db.once('open', function callback () {
 
 });
 
+require('./app/setup')();
+
 module.exports = app;
