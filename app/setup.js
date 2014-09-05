@@ -1,13 +1,15 @@
-var path   = require('path');
-var less   = require('less');
-var fs     = require('fs');
-var crypto = require('crypto');
-var app    = require('../app');
+var path    = require('path');
+var less    = require('less');
+var fs      = require('fs');
+var crypto  = require('crypto');
+var app;
 
 function buildCss() {
-    var code = fs.readFileSync('../stylesheets/all.less', {encoding: 'utf8'});
+    var originalDirectory = process.cwd();
+    process.chdir(__dirname + '/../stylesheets');
+    var code = fs.readFileSync(process.cwd() + '/all.less', {encoding: 'utf8'});
     var options = {
-        paths        : ['../stylesheets'],
+        paths        : [process.cwd()],
         optimization : 2,
         filename     : "all.less",
         compress     : true,
@@ -17,7 +19,6 @@ function buildCss() {
     parser.parse(code, function(error, cssTree) {
         if (error) { return less.writeError(error, options); }
 
-        // Create the CSS from the cssTree
         var css = cssTree.toCSS({
             compress: options.compress,
             cleancss: options.yuicompress
@@ -27,11 +28,14 @@ function buildCss() {
             md5:  crypto.createHash('md5').update(css).digest('hex'),
             code: css
         });
+
+        process.chdir(originalDirectory);
     });
 }
 
 // This setup mechanism is invoked before starting the server.
-function setup() {
+function setup(instance) {
+    app = instance;
     buildCss();
 }
 

@@ -52,6 +52,7 @@ app.db.once('open', function callback () {
     app.all('*', function(req, res, next) {
         res.locals.loggedIn = !!req.user;
         res.locals.currentUser = req.user;
+        res.locals.get = function(name) { return app.get(name); };
         next();
     });
 
@@ -92,6 +93,6 @@ app.db.once('open', function callback () {
 
 });
 
-require('./app/setup')();
+require('./app/setup')(app);
 
 module.exports = app;
