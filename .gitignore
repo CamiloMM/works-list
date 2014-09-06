@@ -22,14 +22,14 @@ build/Release
 # Dependency directory
 # Deployed apps should consider commenting this line out:
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
-#node_modules
+#node_modules # see below.
 
 # MongoDB database.
-data
+/data
 
 # The config file should not be re-used, as it contains a secret string.
 # Remember to create your own from the example!
-config.json
+/config.json
 
 # Build artifacts.
 *.tlog
@@ -38,4 +38,4 @@ config.json
 # I used to commit node_modules, but now I commit platform-dependent directories and
 # symlink node_modules to them on-the-fly. This is because I want to have all the
 # benefits of both worlds. And, guess what, I'm a programmer! So I can.
-node_modules
+/node_modules
