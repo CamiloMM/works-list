@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CCF5ED38-E27C-55E7-929B-9B686ACFA640}</ProjectGuid>
+    <ProjectGuid>{570C2C79-5641-C648-83C5-A1019EE0BEC4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>bcrypt_lib</RootNamespace>
   </PropertyGroup>
@@ -41,7 +41,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\..\..\deps\native\node_modules-MINGW32_NT-6.1-i686-node-v0.10.29\bcrypt\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -68,13 +68,13 @@
       <TargetExt>.node</TargetExt>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\..\..\deps\native\node_modules-MINGW32_NT-6.1-i686-node-v0.10.29\bcrypt\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;uint=unsigned int;BUILDING_NODE_EXTENSION;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\..\..\deps\native\node_modules-MINGW32_NT-6.1-i686-node-v0.10.29\bcrypt\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -112,7 +112,7 @@
       <TargetExt>.node</TargetExt>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\..\..\deps\native\node_modules-MINGW32_NT-6.1-i686-node-v0.10.29\bcrypt\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrador\.node-gyp\0.10.29\src;C:\Users\Administrador\.node-gyp\0.10.29\deps\uv\include;C:\Users\Administrador\.node-gyp\0.10.29\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;uint=unsigned int;BUILDING_NODE_EXTENSION;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>

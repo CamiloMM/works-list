@@ -1,3 +1,20 @@
+2.1.2 / 2014-09-05
+==================
+
+  * deps: etag@~1.3.0
+    - Improve ETag generation speed
+
+2.1.1 / 2014-08-25
+==================
+
+  * Fix `ms` to be listed as a dependency
+
+2.1.0 / 2014-08-24
+==================
+
+  * Accept string for `maxAge` (converted by `ms`)
+  * Use `etag` to generate `ETag` header
+
 2.0.1 / 2014-06-05
 ==================
 
