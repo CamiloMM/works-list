@@ -6,6 +6,7 @@
     padding-top: 12px;
 
     & > div {
+        .relative;
         padding: 0 16px 12px 16px;
     }
 
@@ -52,6 +53,25 @@
             &:hover, &:focus {
                 .bkg(@stressAction);
             }
+        }
+    }
+
+    .question-icon {
+        .img-question-circle;
+        .size(12px);
+        cursor: pointer;
+        opacity: 0.4;
+    }
+
+    .explain {
+        & + .question-icon {
+            .top-right(absolute);
+            margin: 10px 18px;
+        }
+
+        &:hover + .question-icon,
+        & + .question-icon:hover {
+            opacity: 1;
         }
     }
 }

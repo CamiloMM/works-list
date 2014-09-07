@@ -7,7 +7,8 @@ block content
             input.field(type='text', name='username' placeholder='Username')
         div
             label Email:
-            input.field(type='email', name='email' placeholder='Email')
+            input.field.explain(type='email', name='email' placeholder='Email')
+            .question-icon
         div
             label Password:
             input.field(type='password', name='password' placeholder='Password')
@@ -16,6 +17,7 @@ block content
             input.field(type='password', name='passwordConfirmation' placeholder='Password again')
         div
             label Invite:
-            input.field(type='text', name='invite' placeholder='Invite code')
+            input.field.explain(type='text', name='invite' placeholder='Invite code')
+            .question-icon
         div.submit
             input(type='submit', value='Sign Up')
