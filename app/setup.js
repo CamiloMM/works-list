@@ -1,8 +1,9 @@
-var path     = require('path');
-var less     = require('less');
-var fs       = require('fs');
-var crypto   = require('crypto');
-var chokidar = require('chokidar');
+var path       = require('path');
+var less       = require('less');
+var fs         = require('fs');
+var crypto     = require('crypto');
+var chokidar   = require('chokidar');
+var browserify = require('browserify');
 var app;
 
 function buildCss() {
@@ -47,11 +48,48 @@ function watchCss() {
     });
 }
 
+function buildJs() {
+    var originalDirectory = process.cwd();
+    process.chdir(__dirname + '/../scripting');
+    var b = browserify();
+    b.add('./main.js');
+    b.bundle(function(err, buf) {
+        if (err) {
+            var js = 'alert("JS build error!\n\n"+' + JSON.stringify(String(err)) + ');';
+        } else {
+            var js = buf.toString();
+        }
+
+        app.set('js', {
+            md5:  crypto.createHash('md5').update(js).digest('hex'),
+            code: js
+        });
+    })
+    process.chdir(originalDirectory);
+}
+
+function watchJs() { // TODO: DRY this up.
+    var watcher = chokidar.watch(path.normalize(__dirname + '/../scripting'));
+    var timeout = null;
+    watcher.on('all', function change() {
+        if (timeout) {
+            clearTimeout(timeout);
+            timeout = null;
+        }
+        timeout = setTimeout(function() {
+            buildJs();
+            timeout = null;
+        }, 150);
+    });
+}
+
 // This setup mechanism is invoked before starting the server.
 function setup(instance) {
     app = instance;
     buildCss();
     watchCss();
+    buildJs();
+    watchJs();
 }
 
 module.exports = setup;

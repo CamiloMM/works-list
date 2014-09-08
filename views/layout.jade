@@ -4,6 +4,7 @@ html
         title= title
         include favicons
         link(rel='stylesheet', href='/static/' + get('css').md5 + '.css')
+        script(src='/static/' + get('js').md5 + '.js')
     body
         include navbar
         #content
