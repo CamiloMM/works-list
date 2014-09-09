@@ -4,6 +4,7 @@ var fs         = require('fs');
 var crypto     = require('crypto');
 var chokidar   = require('chokidar');
 var browserify = require('browserify');
+var UglifyJS   = require("uglify-js");
 var app;
 
 function buildCss(next) {
@@ -40,9 +41,35 @@ function buildJs(next) {
             var js = buf.toString();
         }
 
+        var options = {
+            fromString : true,
+            mangle     : {screw_ie8: true},
+            compress   : {
+                booleans      : true,
+                cascade       : true,
+                comparisons   : true,
+                conditionals  : true,
+                dead_code     : true,
+                drop_console  : true,
+                drop_debugger : true,
+                evaluate      : true,
+                hoist_funs    : true,
+                if_return     : true,
+                join_vars     : true,
+                loops         : true,
+                negate_iife   : true,
+                properties    : true,
+                screw_ie8     : true,
+                sequences     : true,
+                unused        : true
+            }
+        };
+
+        var minified = UglifyJS.minify(js, options).code;
+
         app.set('js', {
-            md5:  crypto.createHash('md5').update(js).digest('hex'),
-            code: js
+            md5:  crypto.createHash('md5').update(minified).digest('hex'),
+            code: minified
         });
         next();
     })
