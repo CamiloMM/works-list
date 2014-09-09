@@ -6,9 +6,7 @@ var chokidar   = require('chokidar');
 var browserify = require('browserify');
 var app;
 
-function buildCss() {
-    var originalDirectory = process.cwd();
-    process.chdir(__dirname + '/../stylesheets');
+function buildCss(next) {
     var code = fs.readFileSync(process.cwd() + '/all.less', {encoding: 'utf8'});
     var options = {
         paths        : [process.cwd()],
@@ -28,29 +26,11 @@ function buildCss() {
             md5:  crypto.createHash('md5').update(css).digest('hex'),
             code: css
         });
-
-        process.chdir(originalDirectory);
+        next();
     });
 }
 
-function watchCss() {
-    var watcher = chokidar.watch(path.normalize(__dirname + '/../stylesheets'));
-    var timeout = null;
-    watcher.on('all', function change() {
-        if (timeout) {
-            clearTimeout(timeout);
-            timeout = null;
-        }
-        timeout = setTimeout(function() {
-            buildCss();
-            timeout = null;
-        }, 150);
-    });
-}
-
-function buildJs() {
-    var originalDirectory = process.cwd();
-    process.chdir(__dirname + '/../scripting');
+function buildJs(next) {
     var b = browserify();
     b.add('./main.js');
     b.bundle(function(err, buf) {
@@ -64,12 +44,27 @@ function buildJs() {
             md5:  crypto.createHash('md5').update(js).digest('hex'),
             code: js
         });
+        next();
     })
-    process.chdir(originalDirectory);
 }
 
-function watchJs() { // TODO: DRY this up.
-    var watcher = chokidar.watch(path.normalize(__dirname + '/../scripting'));
+// Auto-compilation abstraction. You give it a directory path, and a compilation routine.
+// The routine will be executed in the directory specified, and this directory will be
+// watched for changes, running this compile step again when changes are detected.
+// If the routine needs to be async, we'll pass it a "next" argument.
+function autoCompile(directory, routine) {
+    var absolute = path.resolve(__dirname, directory);
+    function compile() {
+        var originalDirectory = process.cwd();
+        process.chdir(absolute);
+        if (routine.length) {
+            routine(function() { process.chdir(originalDirectory); });
+        } else {
+            routine();
+        }
+    }
+    compile();
+    var watcher = chokidar.watch(absolute);
     var timeout = null;
     watcher.on('all', function change() {
         if (timeout) {
@@ -77,7 +72,7 @@ function watchJs() { // TODO: DRY this up.
             timeout = null;
         }
         timeout = setTimeout(function() {
-            buildJs();
+            compile();
             timeout = null;
         }, 150);
     });
@@ -86,10 +81,8 @@ function watchJs() { // TODO: DRY this up.
 // This setup mechanism is invoked before starting the server.
 function setup(instance) {
     app = instance;
-    buildCss();
-    watchCss();
-    buildJs();
-    watchJs();
+    autoCompile('../stylesheets', buildCss);
+    autoCompile('../scripting', buildJs);
 }
 
 module.exports = setup;
