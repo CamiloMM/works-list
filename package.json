@@ -16,6 +16,7 @@
     "express": "^4.8.8",
     "express-session": "^1.7.6",
     "jade": "^1.6.0",
+    "jquery": "^2.1.1",
     "less": "^1.7.5",
     "mongodb": "^1.4.10",
     "mongoose": "^3.8.15",
