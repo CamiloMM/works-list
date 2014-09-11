@@ -1,23 +1,23 @@
 extends layout
 
 block content
-    form#signup(action='/signup', method='post')
+    form#signup(action='/signup' method='post')
         div
             label Username:
-            input.field(type='text', name='username' placeholder='Username')
+            input.field(type='text' name='username' placeholder='Username' required autofocus)
         div
             label Email:
-            input.field.explain(type='email', name='email' placeholder='Email')
-            .question-icon
+            input.field.explain(type='email' name='email' placeholder='Email' required)
+            .question-icon(title='Focus on this field to view an explanation')
         div
             label Password:
-            input.field(type='password', name='password' placeholder='Password')
+            input.field(type='password' name='password' placeholder='Password' required)
         div
             label Confirm it:
-            input.field(type='password', name='passwordConfirmation' placeholder='Password again')
+            input.field(type='password' name='passwordConfirmation' placeholder='Password again' required)
         div
             label Invite:
-            input.field.explain(type='text', name='invite' placeholder='Invite code')
-            .question-icon
+            input.field.explain(type='text' name='invite' placeholder='Invite code' required)
+            .question-icon(title='Focus on this field to view an explanation')
         div.submit
-            input(type='submit', value='Sign Up')
+            input(type='submit' value='Sign Up')

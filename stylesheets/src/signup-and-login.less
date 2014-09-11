@@ -35,6 +35,18 @@
         &:focus {
             box-shadow: 0 0 0 3px @stressAction;
         }
+
+        &:invalid {
+            color: @stressColor;
+        }
+
+        // These have to be in separate declarations, because of the vendor prefixes.
+        &::-webkit-input-placeholder       { color: @darkGrey; opacity: 1; }
+        &:-ms-input-placeholder            { color: @darkGrey; opacity: 1; }
+        &::-moz-placeholder                { color: @darkGrey; opacity: 1; }
+        &:focus::-webkit-input-placeholder { color: transparent; }
+        &:focus:-ms-input-placeholder      { color: transparent; }
+        &:focus::-moz-placeholder          { color: transparent; }
     }
 
     .submit {
@@ -43,7 +55,6 @@
 
         input {
             .colors(@stressContrast, @stressColor);
-            .table-cell;
             .v-align-bottom;
             font: 700 24px/36px @baseFont;
             height: 36px;
