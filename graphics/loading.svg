@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16">
+
+ <path id="minutes" transform="rotate(135, 8, 8)" fill="#ffffff" d="M2,7,2,9,8,9c0.6,0,1-0.5,1-1s-0.5-1-1-1h-6z">
+    <animateTransform
+        attributeName="transform"
+        begin="0s"
+        dur="0.8s"
+        type="rotate"
+        from="405 8 8"
+        to="45 8 8"
+        repeatCount="indefinite" />
+ </path>
+
+ <path id="hours" transform="rotate(45, 8, 8)" fill="#ffffff" d="M4.2,7c-0,0.3-0.2,0.6-0.2,1s0.1,0.7,0.2,1h3.8c0.6,0,1-0.5,1-1s-0.5-1-1-1h-3.8z">
+    <animateTransform
+        attributeName="transform"
+        begin="0s"
+        dur="1.4s"
+        type="rotate"
+        from="135 8 8"
+        to="495 8 8"
+        repeatCount="indefinite" />
+ </path>
+
+ <circle cx="8" cy="8" r="6" stroke-width="2" fill="none" stroke="#ffffff" />
+
+</svg>
+
