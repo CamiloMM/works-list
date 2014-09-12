@@ -6,28 +6,33 @@ block content
             label Username:
             input.field(type='text' name='username' placeholder='Username' required autofocus)
             .validation
+                .icon.asterisk
         div
             label Email:
             input.field.explain(type='email' name='email' placeholder='Email' required)
             .question-icon(title='Focus on this field to view an explanation')
             .validation
+                .icon.asterisk
             .explanation.email-explanation
-                p Your e-mail will only be used to retrieve your avatar from <a href="http://gravatar.com/">Gravatar.com</a>.
+                p Your e-mail will only be used to retrieve your avatar from <a tabindex="-1" href="http://gravatar.com/">Gravatar.com</a>.
                 p We will not send you e-mails, nor share it with anyone.
                 p We hate spam as much as you :)
         div
             label Password:
             input.field(type='password' name='password' placeholder='Password' required)
             .validation
+                .icon.asterisk
         div
             label Confirm it:
             input.field(type='password' name='passwordConfirmation' placeholder='Password again' required)
             .validation
+                .icon.asterisk
         div
             label Invite:
             input.field.explain(type='text' name='invite' placeholder='Invite code' required)
             .question-icon(title='Focus on this field to view an explanation')
             .validation
+                .icon.asterisk
             .explanation.invite-explanation
                 p Since we're still on a beta version, we ask for an invite for you to sign up.
                 p Please ask someone who has an account for an invite! We're a friendly bunch.
