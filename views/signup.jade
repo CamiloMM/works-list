@@ -4,7 +4,7 @@ block content
     form#signup(action='/signup' method='post')
         div
             label Username:
-            input.field(type='text' name='username' placeholder='Username' required autofocus)
+            input.field(type='text' name='username' placeholder='Username' pattern='[-_0-9a-zA-Z]{3,20}' required autofocus)
             .validation
                 .icon.asterisk
         div

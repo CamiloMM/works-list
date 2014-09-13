@@ -14,7 +14,7 @@ router.post('/signup', function(req, res) {
     var username = req.body.username.toString().trim();
 
     // Check if the username is valid.
-    if (! /^[-_0-9a-zA-Z ]{3,20}$/.test(username)) return fail('invalid username');
+    if (! /^[-_0-9a-zA-Z]{3,20}$/.test(username)) return fail('invalid username');
 
     // Check if the invite provided is an admin-level invite.
     if (invite === req.app.config.adminInvite) {
