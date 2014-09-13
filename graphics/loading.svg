@@ -24,7 +24,17 @@
         repeatCount="indefinite" />
  </path>
 
- <circle cx="8" cy="8" r="6" stroke-width="2" fill="none" stroke="#ffffff" />
+ <circle cx="8" cy="8" r="6" stroke-width="2" fill="none" stroke="#ffffff">
+    <!-- This is here because Firefox is buggy. See http://stackoverflow.com/a/25820169 -->
+    <animateTransform
+        attributeName="transform"
+        begin="0s"
+        dur="1.4s"
+        type="rotate"
+        from="135 8 8"
+        to="495 8 8"
+        repeatCount="indefinite" />
+ </circle>
 
 </svg>
 
