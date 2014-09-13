@@ -19,12 +19,12 @@ block content
                 p We hate spam as much as you :)
         div
             label Password:
-            input.field(type='password' name='password' placeholder='Password' required)
+            input.field(type='password' name='password' placeholder='Password' pattern='\\S.{4,}\\S' required)
             .validation
                 .icon.asterisk
         div
             label Confirm it:
-            input.field(type='password' name='passwordConfirmation' placeholder='Password again' required)
+            input.field(type='password' name='passwordConfirmation' placeholder='Password again' pattern='\\S.{4,}\\S' required)
             .validation
                 .icon.asterisk
         div

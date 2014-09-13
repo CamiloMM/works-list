@@ -1,4 +1,5 @@
-var $ = require('jquery');
+var $     = require('jquery');
+var utils = require('./src/utils.js');
 
 var pages = [
     require('./src/signup-and-login')
@@ -6,6 +7,6 @@ var pages = [
 
 $(function() {
     for (var i = 0; i < pages.length; i++) {
-        pages[i]($);
+        pages[i]($, utils);
     };
 });
