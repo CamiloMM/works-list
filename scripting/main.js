@@ -1,5 +1,5 @@
-var $     = require('jquery');
-var utils = require('./src/utils.js');
+var $        = require('jquery');
+var utils    = require('./src/utils.js');
 var autoload = require('./src/autoload.js')
 
 var pages = [
