@@ -7,7 +7,7 @@ var pages = [
 ];
 
 $(function() {
-    autoload($, utils);
+    autoload(utils);
     for (var i = 0; i < pages.length; i++) {
         pages[i]($, utils);
     };

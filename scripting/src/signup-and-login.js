@@ -1,7 +1,8 @@
 var _ = require('lodash');
+var $ = require('jquery');
 
 // Signup and login page module.
-module.exports = function($, utils) {
+module.exports = function(utils) {
     // Internal validation cache.
     var cache = {names: {}};
 
