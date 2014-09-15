@@ -5,9 +5,10 @@ var crypto     = require('crypto');
 var chokidar   = require('chokidar');
 var browserify = require('browserify');
 var UglifyJS   = require("uglify-js");
+var debug      = require('debug')('works-list:setup');
 var app;
 
-function buildCss(next) {
+function buildCss(next, ensureDirectory) {
     var code = fs.readFileSync(process.cwd() + '/all.less', {encoding: 'utf8'});
     var options = {
         paths        : [process.cwd()],
@@ -19,6 +20,8 @@ function buildCss(next) {
     };
     var parser = new less.Parser(options);
     parser.parse(code, function(error, cssTree) {
+        ensureDirectory();
+
         if (error) { return less.writeError(error, options); }
 
         var css = cssTree.toCSS(options);
@@ -27,14 +30,17 @@ function buildCss(next) {
             md5:  crypto.createHash('md5').update(css).digest('hex'),
             code: css
         });
+
         next();
     });
 }
 
-function buildJs(next) {
+function buildJs(next, ensureDirectory) {
     var b = browserify();
     b.add('./main.js');
     b.bundle(function(err, buf) {
+        ensureDirectory();
+
         if (err) {
             var js = 'alert("JS build error!\n\n"+' + JSON.stringify(String(err)) + ');';
         } else {
@@ -71,8 +77,9 @@ function buildJs(next) {
             md5:  crypto.createHash('md5').update(minified).digest('hex'),
             code: minified
         });
+
         next();
-    })
+    });
 }
 
 // Auto-compilation abstraction. You give it a directory path, and a compilation routine.
@@ -83,12 +90,11 @@ function autoCompile(directory, routine) {
     var absolute = path.resolve(__dirname, directory);
     function compile() {
         var originalDirectory = process.cwd();
-        process.chdir(absolute);
-        if (routine.length) {
-            routine(function() { process.chdir(originalDirectory); });
-        } else {
-            routine();
-        }
+        var ensureDirectory = process.chdir.bind(process, absolute);
+        var next = process.chdir.bind(process, originalDirectory);
+        ensureDirectory();
+        routine(next, ensureDirectory);
+        next();
     }
     compile();
     var watcher = chokidar.watch(absolute);
@@ -103,6 +109,8 @@ function autoCompile(directory, routine) {
             timeout = null;
         }, 150);
     });
+    // It's not like Chokidar is particularly helpful when it flops over and dies, but...
+    watcher.on('error', function(error){ debug('Chokidar error: ' + error); });
 }
 
 // This setup mechanism is invoked before starting the server.
