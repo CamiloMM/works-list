@@ -1,8 +1,22 @@
+var _ = require('lodash');
 
 // Signup and login page module.
 module.exports = function($, utils) {
     // Internal validation cache.
-    var cache = {names: {}, nameTimeout: null};
+    var cache = {names: {}};
+
+    // Name-checking function that queries the server to see if a name is valid.
+    // This function is cached and rate-limited.
+    var checkName = _.debounce(function(name, callback) {
+        if (cache.names[name]) {
+            callback(cache.names[name]);
+        } else {
+            $.post('/api/validate/user', {name: name}, function(data) {
+                if (!_.isObject(data)) data = {reason: 'Server error.'};
+                callback(cache.names[name] = data);
+            });
+        }
+    }, 500);
 
     // When user clicks question icon, focus on the field below it.
     $('.field.explain + .question-icon').click(function() {
@@ -68,24 +82,14 @@ module.exports = function($, utils) {
 
         // Now, if the the field wasn't blank, was valid, and not cached, we should check it.
         if (icon === 'loading') {
-            // We're setting up a bit of a contraption here because we want to perform
-            // this check only after a short while, because we don't need one check at
-            // every character the user types.
-            if (cache.nameTimeout) {
-                clearTimeout(cache.nameTimeout);
-                cache.nameTimeout = null;
-            }
-            cache.nameTimeout = setTimeout(function() {
-                $.post('/api/validate/user', {name: value}, function(data) {
-                    cache.names[value] = data;
-                    // Only change anything if the value hasn't been changed.
-                    if (elem.val() === value) {
-                        icon = data.valid ? 'tick' : 'cross';
-                        validationIcon.attr('class', 'icon ' + icon);
-                    }
-                });
-                cache.nameTimeout = null;
-            }, 500);
+            // The name is only checked after half a second since the user stopped typing.
+            checkName(value, function(data) {
+                // Only change anything if the value hasn't been changed since last time.
+                if (elem.val() === value) {
+                    icon = data.valid ? 'tick' : 'cross';
+                    validationIcon.attr('class', 'icon ' + icon);
+                }
+            });
         }
     });
 }
