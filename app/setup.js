@@ -92,8 +92,13 @@ function autoCompile(directory, routine) {
         var originalDirectory = process.cwd();
         var ensureDirectory = process.chdir.bind(process, absolute);
         var next = process.chdir.bind(process, originalDirectory);
-        ensureDirectory();
-        routine(next, ensureDirectory);
+        try {
+            ensureDirectory();
+            routine(next, ensureDirectory);
+        } catch (e) {
+            debug('Compile routine error for ' + directory + ': \n' + e);
+            next();
+        }
         next();
     }
     compile();
