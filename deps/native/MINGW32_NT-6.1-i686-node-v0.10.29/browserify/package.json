@@ -1,6 +1,6 @@
 {
   "name": "browserify",
-  "version": "5.11.1",
+  "version": "5.11.2",
   "description": "browser-side require() the node way",
   "main": "index.js",
   "bin": {
@@ -92,14 +92,14 @@
     "test": "tap test/*.js"
   },
   "license": "MIT",
-  "gitHead": "774151880940cf4741ac28164b277fce83a2aec9",
+  "gitHead": "b308539deb6245f24b5780c6ce2f11a7addc2235",
   "bugs": {
     "url": "https://github.com/substack/node-browserify/issues"
   },
   "homepage": "https://github.com/substack/node-browserify",
-  "_id": "browserify@5.11.1",
-  "_shasum": "138119e82ae8fe7e6d9d518ee1720971b5926fcc",
-  "_from": "browserify@",
+  "_id": "browserify@5.11.2",
+  "_shasum": "4dfbcb91e918a2a6728e5bbb0f98d9ca5a21cf8d",
+  "_from": "browserify@^5.11.2",
   "_npmVersion": "1.4.25",
   "_npmUser": {
     "name": "substack",
@@ -112,9 +112,9 @@
     }
   ],
   "dist": {
-    "shasum": "138119e82ae8fe7e6d9d518ee1720971b5926fcc",
-    "tarball": "http://registry.npmjs.org/browserify/-/browserify-5.11.1.tgz"
+    "shasum": "4dfbcb91e918a2a6728e5bbb0f98d9ca5a21cf8d",
+    "tarball": "http://registry.npmjs.org/browserify/-/browserify-5.11.2.tgz"
   },
   "directories": {},
-  "_resolved": "https://registry.npmjs.org/browserify/-/browserify-5.11.1.tgz"
+  "_resolved": "https://registry.npmjs.org/browserify/-/browserify-5.11.2.tgz"
 }

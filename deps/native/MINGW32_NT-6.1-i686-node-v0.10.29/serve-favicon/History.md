@@ -1,3 +1,15 @@
+2.1.4 / 2014-09-15
+==================
+
+  * Fix content headers being sent in 304 response
+  * deps: etag@~1.3.1
+    - Improve ETag generation speed
+
+2.1.3 / 2014-09-07
+==================
+
+  * deps: fresh@0.2.4
+
 2.1.2 / 2014-09-05
 ==================
 
