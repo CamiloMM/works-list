@@ -1,3 +1,55 @@
+# 6.0.3
+
+fixes a bug where module insert-module-globals would trigger too soon and
+conflict with other transforms
+
+https://github.com/substack/node-browserify/issues/867
+https://github.com/substack/node-browserify/issues/895
+https://github.com/substack/node-browserify/issues/855
+
+# 6.0.2
+
+upgrades process to 0.8.0
+https://github.com/substack/node-browserify/pull/906
+
+# 6.0.1
+
+respects opts.expose in require()
+https://github.com/substack/node-browserify/pull/907
+
+# 6.0.0
+
+resolves source map maths relative to the base url. This should help with more
+reproducible builds.
+
+https://github.com/substack/node-browserify/pull/923
+
+# 5.13.1
+
+bails early if opts.basedir is not the correct type
+https://github.com/substack/node-browserify/pull/927
+
+# 5.13.0
+
+exposes global browserify options to transforms under opts._flags
+https://github.com/substack/node-browserify/pull/910
+
+# 5.12.2
+
+fixes the array form of b.external()
+https://github.com/substack/node-browserify/issues/930
+
+# 5.12.1
+
+dedupe deps when fullPaths is on
+https://github.com/substack/node-browserify/pull/917
+and fixes the crypto tests
+
+# 5.12.0
+
+adds back the array form for add() and require(), with extra places to add
+options
+
 # 5.11.2
 
 fixes ignore for relative paths

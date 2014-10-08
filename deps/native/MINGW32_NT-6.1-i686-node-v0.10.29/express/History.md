@@ -1,3 +1,34 @@
+4.9.5 / 2014-09-24
+==================
+
+  * deps: etag@~1.4.0
+  * deps: proxy-addr@~1.0.3
+    - Use `forwarded` npm module
+  * deps: send@0.9.3
+    - deps: etag@~1.4.0
+  * deps: serve-static@~1.6.3
+    - deps: send@0.9.3
+
+4.9.4 / 2014-09-19
+==================
+
+  * deps: qs@2.2.4
+    - Fix issue with object keys starting with numbers truncated
+
+4.9.3 / 2014-09-18
+==================
+
+  * deps: proxy-addr@~1.0.2
+    - Fix a global leak when multiple subnets are trusted
+    - deps: ipaddr.js@0.1.3
+
+4.9.2 / 2014-09-17
+==================
+
+  * Fix regression for empty string `path` in `app.use`
+  * Fix `router.use` to accept array of middleware without path
+  * Improve error message for bad `app.use` arguments
+
 4.9.1 / 2014-09-16
 ==================
 
@@ -478,6 +509,32 @@
    - `app.router()` - returns the app Router instance
    - `app.route()` - Proxy to the app's `Router#route()` method to create a new route
    - Router & Route - public API
+
+3.17.5 / 2014-09-24
+===================
+
+  * deps: connect@2.26.3
+    - deps: body-parser@~1.8.4
+    - deps: serve-favicon@~2.1.5
+    - deps: serve-static@~1.6.3
+  * deps: proxy-addr@~1.0.3
+    - Use `forwarded` npm module
+  * deps: send@0.9.3
+    - deps: etag@~1.4.0
+
+3.17.4 / 2014-09-19
+===================
+
+  * deps: connect@2.26.2
+    - deps: body-parser@~1.8.3
+    - deps: qs@2.2.4
+
+3.17.3 / 2014-09-18
+===================
+
+  * deps: proxy-addr@~1.0.2
+    - Fix a global leak when multiple subnets are trusted
+    - deps: ipaddr.js@0.1.3
 
 3.17.2 / 2014-09-15
 ===================

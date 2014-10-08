@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bcrypt_lib", "bcrypt_lib.vcxproj", "{570C2C79-5641-C648-83C5-A1019EE0BEC4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bcrypt_lib", "bcrypt_lib.vcxproj", "{CE452A3A-A536-274B-0EC1-35123D1508DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,10 +8,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{570C2C79-5641-C648-83C5-A1019EE0BEC4}.Debug|Win32.ActiveCfg = Debug|Win32
-		{570C2C79-5641-C648-83C5-A1019EE0BEC4}.Debug|Win32.Build.0 = Debug|Win32
-		{570C2C79-5641-C648-83C5-A1019EE0BEC4}.Release|Win32.ActiveCfg = Release|Win32
-		{570C2C79-5641-C648-83C5-A1019EE0BEC4}.Release|Win32.Build.0 = Release|Win32
+		{CE452A3A-A536-274B-0EC1-35123D1508DF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CE452A3A-A536-274B-0EC1-35123D1508DF}.Debug|Win32.Build.0 = Debug|Win32
+		{CE452A3A-A536-274B-0EC1-35123D1508DF}.Release|Win32.ActiveCfg = Release|Win32
+		{CE452A3A-A536-274B-0EC1-35123D1508DF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

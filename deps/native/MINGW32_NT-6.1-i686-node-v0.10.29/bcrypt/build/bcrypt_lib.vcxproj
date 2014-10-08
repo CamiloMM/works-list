@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{570C2C79-5641-C648-83C5-A1019EE0BEC4}</ProjectGuid>
+    <ProjectGuid>{CE452A3A-A536-274B-0EC1-35123D1508DF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>bcrypt_lib</RootNamespace>
   </PropertyGroup>
